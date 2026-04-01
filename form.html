@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polla Mundialista IEEE 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="stylesform.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <nav>
+    <a href="#" class="logo">
+      <div class="logo-icon"><i class="bi bi-dribbble"></i></div>IEEE Polla Mundialista
+    </a>
+    <span class="nav-badge"><span>●</span> Inscripciones abiertas</span>
+  </nav>
+  <div class="page">
+    <div class="stepper">
+      <div class="stepper-track">
+        <div class="step-node active" id="sn1">
+          <div class="s-circle" id="sc1">1</div>
+          <div class="s-label">Detalles</div>
+        </div>
+        <div class="step-node" id="sn2">
+          <div class="s-circle" id="sc2">2</div>
+          <div class="s-label">Predicciones</div>
+        </div>
+        <div class="step-node" id="sn3">
+          <div class="s-circle" id="sc3">3</div>
+          <div class="s-label">Confirmar</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="panel active" id="panel1">
+        <div class="card-header">
+          <div class="header-icon">
+            <i class="bi bi-person"></i>
+          </div>
+          <div>
+            <h2>Información Personal</h2>
+            <p>Tus datos para contactarte si eres ganador</p>
+          </div>
+        </div>
+        <div style="padding:1.75rem;">
+          <div class="fields-grid two-col">
+            <div class="field-group" id="fg-codigo">
+              <label for="codigo">Código Estudiantil <span>*</span></label>
+              <input type="number" id="codigo" placeholder="Ej. 20231234" />
+              <small id="codigo-status"></small>
+              <span class="field-error">Ingresa tu código estudiantil</span>
+            </div>
+            <div class="field-group" id="fg-nombre">
+              <label for="nombre">Nombre Completo <span>*</span></label>
+              <input type="text" id="nombre" placeholder="Ej. Laura Martínez Pérez" autocomplete="name" />
+              <span class="field-error">Por favor ingresa tu nombre completo</span>
+            </div>
+            <div class="field-group" id="fg-correo">
+              <label for="correo">Correo Institucional <span>*</span></label>
+              <input type="email" id="correo" placeholder="usuario@udistrital.edu.co" />
+              <span class="field-error">Ingresa un correo @udistrital.edu.co válido</span>
+            </div>
+            <div class="field-group" id="fg-telefono">
+              <label for="telefono">Teléfono / WhatsApp <span>*</span></label>
+              <input type="tel" id="telefono" placeholder="Ej. 3001234567" maxlength="12" />
+              <span class="field-error">Ingresa tu número de teléfono</span>
+            </div>
+            <div class="field-group" id="fg-proyecto" style="grid-column:1/-1;">
+              <label for="proyecto">Proyecto Curricular <span>*</span></label>
+              <select id="proyecto">
+                <option value="" disabled selected>Selecciona tu carrera</option>
+                <option>Tecnología en Sistematización de Datos</option>
+                <option>Tecnología en Construcciones Civiles</option>
+                <option>Tecnología en Electricidad de Media y Baja Tensión</option>
+                <option>Tecnología en Electrónica Industrial</option>
+                <option>Tecnología en Gestión de la Producción Industrial</option>
+                <option>Tecnología en Mecánica Industrial</option>
+                <option>Ingeniería Civil</option>
+                <option>Ingeniería de Producción</option>
+                <option>Ingeniería Eléctrica</option>
+                <option>Ingeniería en Control y Automatización</option>
+                <option>Ingeniería en Telecomunicaciones</option>
+                <option>Ingeniería en Telemática</option>
+                <option>Ingeniería Mecánica</option>
+                <option>Otro</option>
+              </select>
+              <span class="field-error">Selecciona tu proyecto curricular</span>
+            </div>
+            <div class="field-group" id="fg-tipo" style="grid-column:1/-1;">
+              <label>Tipo de Polla <span>*</span></label>
+              <div class="type-row" id="typeRow">
+                <label class="type-card" id="tc-free">
+                  <input type="radio" class="type-radio" name="tipoPolla" value="free" id="tp-free" />
+                  <div class="type-card-top"><span class="type-card-name"><i class="bi bi-ticket-perforated"></i> Polla
+                      Gratis</span><span class="type-card-price">$0</span></div>
+                  <div class="type-card-desc">Predice el podio del torneo (4 equipos)</div>
+                </label>
+                <label class="type-card" id="tc-3000">
+                  <input type="radio" class="type-radio" name="tipoPolla" value="3000" id="tp-3000" />
+                  <div class="type-card-top"><span class="type-card-name"><i class="bi bi-trophy"></i> Polla
+                      $3.000</span><span class="type-card-price">$3.000</span></div>
+                  <div class="type-card-desc">Simula grupos, terceros y bracket completo</div>
+                </label>
+              </div>
+              <span class="field-error" id="tipo-err" style="display:none;">Selecciona un tipo de polla</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" id="panel2free">
+        <div class="card-header">
+          <div class="header-icon">
+            <i class="bi bi-trophy"></i>
+          </div>
+          <div>
+            <h2>Arma tu Podio</h2>
+            <p>Arrastra los equipos a las posiciones del Mundial</p>
+          </div>
+        </div>
+        <div style="padding:1.75rem;">
+          <div class="drag-container">
+            <div class="teams-pool-section">
+              <div class="sec-label">Equipos del Mundial</div>
+              <input type="text" class="pool-search" id="teamSearch" placeholder="Buscar país..."
+                oninput="filterPool()" />
+              <div class="teams-pool" id="teamsPool"></div>
+            </div>
+            <div class="podium-section">
+              <div class="sec-label">Tu Predicción</div>
+              <div class="podium-grid" id="podiumGrid">
+                <div class="drop-zone" data-rank="1" id="puesto1">
+                  <div class="rank-badge"><i class="bi bi-trophy"></i></div>
+                  <div class="drop-placeholder">Arrastra Campeón</div>
+                </div>
+                <div class="drop-zone" data-rank="2" id="puesto2">
+                  <div class="rank-badge"><i class="bi bi-2-circle"></i></div>
+                  <div class="drop-placeholder">Arrastra Subcampeón</div>
+                </div>
+                <div class="drop-zone" data-rank="3" id="puesto3">
+                  <div class="rank-badge"><i class="bi bi-3-circle"></i></div>
+                  <div class="drop-placeholder">Arrastra 3° Puesto</div>
+                </div>
+                <div class="drop-zone" data-rank="4" id="puesto4">
+                  <div class="rank-badge"><i class="bi bi-4-circle"></i></div>
+                  <div class="drop-placeholder">Arrastra 4° Puesto</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sec-label">Sección de Desempate</div>
+          <div class="tie-grid">
+            <div class="field-group"><label><i class="bi bi-dribbble"></i> Goleador (Bota de Oro)</label><input
+                type="text" id="goleador" placeholder="Ej. Kylian Mbappé" /></div>
+            <div class="field-group"><label><i class="bi bi-shield"></i> Mejor Portero</label><input type="text"
+                id="portero" placeholder="Ej. David Ospina" /></div>
+            <div class="field-group"><label><i class="bi bi-123"></i> Goles totales en la Final</label><input
+                type="number" id="golesFinal" placeholder="Ej: 3" min="0" /></div>
+            <div class="field-group"><label><i class="bi bi-exclamation-triangle"></i> Tarjetas Rojas en el
+                torneo</label><input type="number" id="tarjetasRojas" placeholder="Total del mundial" min="0" /></div>
+            <div class="field-group" style="grid-column:1/-1;"><label><i class="bi bi-123"></i> Goles en Fase de
+                Grupos</label><input type="number" id="golesFaseGrupos" placeholder="Ej: 96" min="1" /></div>
+            <div class="field-group">
+              <label><i class="bi bi-lightning-charge"></i> Equipo sorpresa</label>
+              <div class="team-select" id="equipoSorpresa"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-emoji-frown"></i> Equipo decepción</label>
+              <div class="team-select" id="equipoDecepcion"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-shield-x"></i> Selección menos goleada</label>
+              <div class="team-select" id="seleccionDefensa"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-people"></i> Selección con más goles</label>
+              <div class="team-select" id="seleccionGoles"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-person-bounding-box"></i> Mejor jugador joven</label>
+              <input type="text" id="jugadorJoven" placeholder="Ej. Jude Bellingham">
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-arrow-repeat"></i> ¿Habrá prórroga en la final?</label>
+              <select id="prorrogaFinal">
+                <option value="">Selecciona</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel2sim">
+      <div class="card-header">
+        <div class="header-icon">
+          <i class="bi bi-globe-americas"></i>
+        </div>
+        <div>
+          <h2>Simulador Completo</h2>
+          <p>Clasifica los grupos, elige los mejores terceros y completa el bracket</p>
+        </div>
+      </div>
+      <div style="padding:1.75rem;">
+        <div class="sim-nav">
+          <button class="sim-tab active" id="stab1" onclick="simGoTo(1)">① Grupos</button>
+          <button class="sim-tab" id="stab2" onclick="simGoTo(2)">② Mejores 3.°</button>
+          <button class="sim-tab" id="stab3" onclick="simGoTo(3)">③ Bracket</button>
+        </div>
+        <div class="sim-step active" id="ss1">
+          <div class="sec-label">12 grupos · 48 equipos — reordena arrastrando o tocando dos filas</div>
+          <div id="groups-grid"></div>
+          <div class="sim-footer">
+            <span style="font-size:.75rem;color:var(--text-m);">Paso 1 de 3</span>
+            <button class="btn-sim primary" onclick="simNext1()">Siguiente: Mejores 3.° →</button>
+          </div>
+        </div>
+        <div class="sim-step" id="ss2">
+          <p style="font-size:.8rem;color:var(--text-s);margin-bottom:.85rem;">Elige exactamente <strong>8</strong>
+            equipos terceros que pasan a octavos en el orden de mejor tercero</p>
+          <div class="thirds-wrap">
+            <div class="thirds-hdr">
+              <p>Haz clic en una fila para seleccionar/deseleccionar</p>
+              <div class="count-badge">Seleccionados: <span class="n" id="third-count">0</span> / 8</div>
+            </div>
+            <table class="thirds-table">
+              <thead>
+                <tr>
+                  <th>Grupo</th>
+                  <th>3.° clasificado</th>
+                </tr>
+              </thead>
+              <tbody id="third-tbody"></tbody>
+            </table>
+          </div>
+          <div class="sim-footer">
+            <button class="btn-sim" onclick="simGoTo(1)">← Grupos</button>
+            <button class="btn-sim primary" onclick="simNext2()">Siguiente: Bracket →</button>
+          </div>
+        </div>
+        <div class="sim-step" id="ss3">
+          <p style="font-size:.8rem;color:var(--text-s);margin-bottom:.75rem;">Haz clic en el equipo ganador de cada
+            partido para avanzarlo</p>
+          <div class="bracket-wrapper-rel">
+            <div id="bracket-scroll">
+              <div id="bracket"></div>
+            </div>
+            <svg id="bracket-lines" style="position:absolute;inset:0;pointer-events:none;z-index:0;"></svg>
+          </div>
+          <div id="champ-bar"><span><i class="bi bi-trophy"></i> Campeón:</span><span id="champ-name">?</span></div>
+          <div class="sim-footer">
+            <button class="btn-sim" onclick="simGoTo(2)">← Mejores 3.°</button>
+            <span style="font-size:.75rem;color:var(--text-m);">Elige al campeón para continuar</span>
+          </div>
+        </div>
+        <div id="tie3000-wrap" style="display:none;margin-top:1.5rem;">
+          <div class="sec-label">Sección de Desempate</div>
+          <div class="tie-grid">
+            <div class="field-group"><label><i class="bi bi-dribbble"></i> Goleador (Bota de Oro)</label><input
+                type="text" id="goleador3" placeholder="Ej. Kylian Mbappé" /></div>
+            <div class="field-group"><label><i class="bi bi-shield"></i> Mejor Portero</label><input type="text"
+                id="portero3" placeholder="Ej. David Ospina" /></div>
+            <div class="field-group"><label><i class="bi bi-123"></i> Goles totales en la Final</label><input
+                type="number" id="golesFinal3" placeholder="Ej: 3" min="0" /></div>
+            <div class="field-group"><label><i class="bi bi-exclamation-triangle"></i> Tarjetas Rojas en el
+                torneo</label><input type="number" id="tarjetasRojas3" placeholder="Total del mundial" min="0" />
+            </div>
+            <div class="field-group" style="grid-column:1/-1;"><label><i class="bi bi-123"></i> Goles en Fase de
+                Grupos</label><input type="number" id="golesFaseGrupos3" placeholder="Ej: 96" min="1" /></div>
+            <div class="field-group">
+              <label><i class="bi bi-lightning-charge"></i> Equipo sorpresa</label>
+              <div class="team-select" id="equipoSorpresa3"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-emoji-frown"></i> Equipo decepción</label>
+              <div class="team-select" id="equipoDecepcion3"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-shield-x"></i> Selección menos goleada</label>
+              <div class="team-select" id="seleccionDefensa3"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-people"></i> Selección con más goles</label>
+              <div class="team-select" id="seleccionGoles3"></div>
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-person-bounding-box"></i> Mejor jugador joven</label>
+              <input type="text" id="jugadorJoven3" placeholder="Ej. Jude Bellingham">
+            </div>
+            <div class="field-group">
+              <label><i class="bi bi-arrow-repeat"></i> ¿Habrá prórroga en la final?</label>
+              <select id="prorrogaFinal3">
+                <option value="">Selecciona</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel3">
+      <div class="card-header">
+        <div class="header-icon">
+          <i class="bi bi-credit-card"></i>
+        </div>
+        <div>
+          <h2>Confirmación</h2>
+          <p>Revisa tu predicción antes de enviar</p>
+        </div>
+      </div>
+      <div style="padding:1.75rem;">
+
+        <div id="upload-section" style="display:none;">
+          <div class="payment-reminder">
+            <div class="payment-reminder-title">
+              <i class="bi bi-phone"></i> Realiza tu pago antes de subir el comprobante
+            </div>
+            <div class="payment-reminder-body">
+              <div class="payment-option">
+                <span class="payment-label">Nequi / Daviplata</span>
+                <span class="payment-number">315 6132010</span>
+              </div>
+              <div class="payment-option">
+                <span class="payment-label">Nombre</span>
+                <span class="payment-number">Miguel Sierra</span>
+              </div>
+              <div class="payment-option">
+                <span class="payment-label">Valor</span>
+                <span class="payment-number payment-value">$3.000</span>
+              </div>
+              <div class="payment-option qr-option">
+                <span class="payment-label">QR de pago</span>
+                <img src="images/qrcode.png" alt="QR Nequi">
+              </div>
+            </div>
+            <p class="payment-note">
+              <i class="bi bi-info-circle"></i>
+              Escribe tu nombre en el mensaje/referencia del pago para identificarte.
+            </p>
+          </div>
+          <div class="upload-preview" id="uploadPreview">
+            <span><i class="bi bi-clipboard"></i></span>
+            <span class="preview-name" id="prevName">—</span>
+            <span class="preview-size" id="prevSize">—</span>
+            <button class="preview-remove" onclick="removeFile()">✕</button>
+          </div>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()"
+            ondragover="e=>e.preventDefault()" ondrop="handleDrop(event)">
+            <input type="file" id="fileInput" accept="image/*,.pdf" onchange="handleFile(this)" />
+            <div class="upload-icon"><i class="bi bi-paperclip"></i></div>
+            <div class="upload-title">Arrastra tu comprobante de pago aquí</div>
+            <div class="upload-sub">o haz clic para seleccionar · JPG · PNG · PDF · Max 5MB</div>
+          </div>
+        </div>
+
+        <div id="free-note-wrap" class="free-note" style="display:none;">
+          <i class="bi bi-info-lg"></i> La polla gratis no requiere comprobante de pago.
+        </div>
+
+        <div class="confirm-box">
+          <div class="confirm-title"><i class="bi bi-clipboard-check"></i> Resumen de tu Polla</div>
+          <div class="confirm-row"><span>Nombre</span><span id="cs-nombre">—</span></div>
+          <div class="confirm-row"><span>Código</span><span id="cs-codigo">—</span></div>
+          <div class="confirm-row"><span>Correo</span><span id="cs-correo">—</span></div>
+          <div class="confirm-row"><span>Teléfono</span><span id="cs-telefono">—</span></div>
+          <div class="confirm-row"><span>Carrera</span><span id="cs-proyecto">—</span></div>
+          <div class="confirm-row"><span>Tipo</span><span id="cs-tipo">—</span></div>
+          <div class="confirm-row confirm-highlight"><span><i class="bi bi-trophy"></i> Campeón</span><span
+              id="cs-campeon">—</span></div>
+          <div class="confirm-row confirm-highlight"><span><i class="bi bi-2-circle"></i> Subcampeón</span><span
+              id="cs-sub">—</span></div>
+          <div class="confirm-row" id="cs-3rd-row"><span><i class="bi bi-3-circle"></i> 3.er lugar</span><span
+              id="cs-3rd">—</span></div>
+          <div class="confirm-row"><span><i class="bi bi-4-circle"></i> 4.° lugar</span><span id="cs-4th">—</span></div>
+          <div class="confirm-row" id="cs-sf-row" style="display:none;"><span><i class="bi bi-crosshair2"></i>
+              Semifinalistas</span><span id="cs-sf">—</span></div>
+          <div class="confirm-row"><span><i class="bi bi-dribbble"></i> Goleador</span><span id="cs-gol">—</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-check">✓</div>
+      <h2>¡Inscripción Enviada!</h2>
+      <p>Recibimos tu polla. Disfruta el mundial y te avisaremos si ganaste.</p>
+      <div class="success-id">Tu número de polla: &nbsp;<strong id="pollNumber">#——</strong></div>
+    </div>
+
+    <div class="form-actions" id="formActions">
+      <span class="step-counter" id="stepCounter">Paso 1 de 3</span>
+      <div class="btn-row">
+        <button class="btn-back" id="btnBack" onclick="prevStep()" disabled>← Atrás</button>
+        <button class="btn-next" id="btnNext" onclick="nextStep()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="form.js"></script>
+</body>
+
+</html>

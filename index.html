@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polla Mundialista IEEE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <img src="images/Master Brand White.png" alt="IEEE Logo" />
+          </div>
+          POLLA MUNDIALISTA: IEEE
+        </a>
+        <ul class="nav-links">
+          <li><a href="#features">Proceso Inscripccion</a></li>
+          <li><a href="#pricing">Registro</a></li>
+          <li><a href="#instructors">Información</a></li>
+        </ul>
+        <a href="#pricing" class="nav-cta"><span>Realizar Polla</span></a>
+        <button class="mobile-menu-btn">☰</button>
+      </div>
+    </nav>
+    <section class="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-badge"><span>●</span> Polla Mundialista IEEE</div>
+          <h1>
+            Bienvenido a la
+            <span class="highlight">Polla Mundialista</span> IEEE
+          </h1>
+          <p class="hero-description">
+            Demuestra tu capacidad de análisis, acierta los marcadores y compite
+            contra estudiantes, egresados y profesores por el gran pozo
+            acumulado participando en la polla mundialista IEEE.
+          </p>
+          <div class="hero-buttons">
+            <a href="#pricing" class="btn-primary"> Realizar Polla → </a>
+            <a href="#features" class="btn-secondary"> ¿Cómo Funciona? </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-value">104</div>
+              <div class="stat-label">Partidos</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Niveles de Pronóstico</div>
+            </div>
+          </div>
+        </div>
+        <div class="pixel-scene-wrapper">
+          <div class="pixel-card">
+            <div class="pixel-topbar">
+              <span class="pixel-title">⚽ Polla Mundialista · IEEE</span>
+              <span class="pixel-phase" id="phaseLabel">Corriendo...</span>
+            </div>
+            <canvas id="pixelCanvas"></canvas>
+            <div class="pixel-footer">
+              <span class="pixel-hint"
+                >¡INSCRIBETE Y GANA DIVERSOS PREMIOS!</span
+              >
+              <div class="pixel-dots" id="phaseDots">
+                <span class="pdot active"></span>
+                <span class="pdot"></span>
+                <span class="pdot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features" id="features">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-label">Proceso Inscripción</div>
+          <h2 class="section-title">
+            Pasos para inscribirse en la Polla Mundialista IEEE
+          </h2>
+          <p class="section-description">
+            La ingeniería se encuentra con la pasión del fútbol. No dejes tu
+            suerte al azar; aplica tu capacidad de análisis, estudia las
+            estadísticas y compite por el gran pozo acumulado de la Rama
+            Estudiantil IEEE. El mundial se vive mejor cuando hay un reto de por
+            medio. Sigue estos 6 pasos para asegurar tu lugar en el tablero de
+            líderes
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M11.5 2a8.5 8.5 0 0 1 0 17v3l-3-3-3 3v-3a8.5 8.5 0 0 1 6-16z"
+                />
+                <circle cx="11.5" cy="10.5" r="3" />
+                <path d="M11.5 7.5v-2M14.5 10.5h2M11.5 13.5v2M8.5 10.5h-2" />
+              </svg>
+            </div>
+            <h3>Realiza el Pago</h3>
+            <p>
+              Envía los $3.000 COP de tu inscripción a la cuenta oficial de
+              Nequi de la Rama IEEE. Recuerda que este es el único medio
+              autorizado.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="4" width="20" height="14" rx="2" />
+                <circle cx="12" cy="11" r="3" />
+                <path d="M10.5 9.5l4 3-4 3z" fill="currentColor" />
+              </svg>
+            </div>
+            <h3>Guarda tu Comprobante</h3>
+            <p>
+              Toma una captura de pantalla donde se vea claramente la fecha,
+              hora y número de referencia de la transacción. Sin esto, no
+              podremos validar tu participación.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                />
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 8v4l2 2" />
+              </svg>
+            </div>
+            <h3>Ingresa al Formulario</h3>
+            <p>
+              Ingresa al formulario de inscripción de esta página y escribe tu
+              información personal; con el fin de que si eres el ganador te
+              podamos contactar. Estos datos son: Nombre, Código, Teléfono,
+              Correo.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+                <path d="M9 9l12-2" />
+              </svg>
+            </div>
+            <h3>Registra tu Polla</h3>
+            <p>
+              Llena tus marcadores para el mundial, estos resultados según su
+              exactitud te darán más puntos dentro del ranking que se irá
+              actualizando durante el transcurso del mundial.
+            </p>
+            <p></p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"
+                />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="22" />
+                <path d="M8 22h8" />
+                <path
+                  d="M3 10l1.5 1.5M21 10l-1.5 1.5M3 14l1.5-1.5M21 14l-1.5-1.5"
+                />
+              </svg>
+            </div>
+            <h3>Adjunta el Soporte</h3>
+            <p>
+              En la última sección del formulario se encuentra un link de
+              Whatsapp, el cual redirige al chat de los organizadores, en este
+              deberás adjuntar el comprobante de pago y el numero de Polla
+              generado al terminar el formulario.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h3>Disfruta el Mundial</h3>
+            <p>
+              Una vez enviado, el equipo de IEEE, validará tu pago en un plazo
+              máximo de 48 horas. Cuando se confirme toda la información,
+              recibirás un mensaje o correo de información y aparecerás en la
+              tabla de posiciones de la página.
+            </p>
+          </div>
+        </div>
+        <br /><br />
+        <div class="section-header">
+          <p class="section-description">
+            Los resultados de los ganadores se actualizarán el día de la final
+            junto a la tabla de posiciones de los respectivos ganadores.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="pricing" id="pricing">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-label">Registro</div>
+          <h2 class="section-title">Registro de Polla Mundialista</h2>
+          <p class="section-description">
+            Los 2 niveles de pronóstico que se ofrecen se presentan a
+            continuación
+          </p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-name">Plan Pronóstico Gratuito</div>
+            <div class="pricing-price"><span class="currency"></span>Gratis</div>
+            <div class="pricing-billed"></div>
+            <div class="pricing-savings"></div>
+            <p class="pricing-description">Premio 1er Puesto <br> 1 Pollo Asado</p>
+            <ul class="pricing-features">
+              <li>Predicción 1-4 Puestos</li>
+              <li>Ranking General</li>
+              <li>Notificación de resultados vía correo/WhatsApp</li>
+              <li>Entrega del premio en la Facultad</li>
+            </ul>
+            <a href="form.html" class="pricing-btn">Registrar Polla</a>
+          </div>
+          <div class="pricing-card featured" id="proCard">
+            <div class="pricing-name">Plan Mundialista IEEE</div>
+            <div class="pricing-price">
+              <span class="currency">$</span><span id="proPrice">3000</span
+              ><span class="period">COP</span>
+            </div>
+            <div class="pricing-billed" id="proBilled"></div>
+            <div class="pricing-savings" id="proSavings"></div>
+            <p class="pricing-description">Premio: 1ero y 2do Puesto<br>35% y 15% del recaudo<br></p>
+            <ul class="pricing-features">
+              <li>Registro de pronóstico por fase.</li>
+              <li>Acceso al ranking de puntuación en tiempo real.</li>
+              <li>Notificación de resultados vía correo/WhatsApp</li>
+              <li>Premio Según Inscripción</li>
+            </ul>
+            <a href="form.html" class="pricing-btn">Registrar Polla</a>
+          </div>
+      </div>
+    </section>
+    <section class="instructors" id="instructors">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-label">Información</div>
+          <h2 class="section-title">Organizado Por</h2>
+        </div>
+        <div class="instructors-grid">
+          <div class="instructor-card">
+            <div class="instructor-image">
+              <img src="images/Tagline Brand.png" alt="IEEE" />
+            </div>
+            <div class="instructor-name">IEEE Student Branch</div>
+            <div class="instructor-role">
+              Universidad Distrital Francisco José de Caldas
+            </div>
+            <p class="instructor-bio">Facultad Tecnológica</p>
+          </div>
+          <div class="instructors-grid">
+            <div class="instructor-card">
+              <div class="instructor-image">
+                <img src="images/IEEE_Computer.png" alt="IEEE" />
+              </div>
+              <div class="instructor-name">IEEE Computer Society Chapter</div>
+              <div class="instructor-role">
+                Universidad Distrital Francisco José de Caldas
+              </div>
+              <p class="instructor-bio">Facultad Tecnológica</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="#" class="logo">IEEE Facultad Tecnológica
+            </a>
+            <img src="images/Master Brand White.png" alt="IEEE logo" width="200px">
+          </div>
+          <div>
+            <h4 class="footer-title">REDES</h4>
+            <ul class="footer-links">
+              <li><a href="https://chat.whatsapp.com/DyvvelmxJ3DF8fblLTLEma" >IEEE WhatsApp Community</a></li>
+              <li><a href="https://www.instagram.com/ieee.udistrital.tecno?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" >Instagram</a></li>
+              <li><a href="https://www.facebook.com/profile.php?id=61559381924677">Facebook</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
