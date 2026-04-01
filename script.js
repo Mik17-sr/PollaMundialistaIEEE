@@ -4,59 +4,40 @@ const STRING_NOTES = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
 const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 (function(){
-  // ── Canvas setup ──────────────────────────────────────────
   const cv = document.getElementById('pixelCanvas');
   const g  = cv.getContext('2d');
   g.imageSmoothingEnabled = false;
-  // Virtual resolution: 160 × 104 "pixels" rendered at 3× scale
   const VW=160, VH=104, SC=3;
   cv.width=VW*SC; cv.height=VH*SC;
 
-  // ── Palette ───────────────────────────────────────────────
-  const _ = null; // transparent
+  const _ = null; 
   const C = {
-    // Sky
     s0:'#090d18', s1:'#0d1526', s2:'#111e35',
-    // Ground
     gr:'#173217', gd:'#0f2410', gl:'#1d4a1d', gLine:'#1f5020',
-    // Crowd
     cr0:'#181c30', cr1:'#121626', cr2:'#0e1220',
-    // Skin
     sk:'#f0a060', skS:'#c07030', skD:'#a05828',
-    // Hair
     hr:'#180600',
-    // Player 1 — amber
     s1a:'#f59e0b', s1b:'#b57000',
-    // Player 2 — blue
     s2a:'#2563eb', s2b:'#1040a0',
-    // Clothing
     sh:'#0a0a0a', shS:'#1a1a1a',
     sk1:'#efefef', sk2:'#bbbbbb',
     shoe:'#181818', shoeS:'#333333',
-    // Ball
     ba:'#f0f0f0', baS:'#222222', baSh:'#cccccc',
-    // Goal
     po:'#d8d8d8',
-    // Sign
     sgBg:'#0c0c0c', sgBd:'#f59e0b', sgBdI:'#d97706',
-    // IEEE logo
     ie0:'#004f78', ie1:'#0080bb', ieTx:'#ffffff',
     bolt:'#ffd700',
-    // FX
     sp0:'#ffffa0', sp1:'#f59e0b',
     conf:[  '#ef4444','#f59e0b','#3b82f6','#22c55e','#fbbf24','#ffffff','#a855f7'],
-    // General
+
     wh:'#ffffff',
   };
 
-  // ── Draw utils ────────────────────────────────────────────
   function px(x,y,c){ if(!c)return; g.fillStyle=c; g.fillRect(x*SC,y*SC,SC,SC); }
   function bk(x,y,w,h,c){ if(!c)return; g.fillStyle=c; g.fillRect(x*SC,y*SC,w*SC,h*SC); }
 
-  // ── Ground Y ──────────────────────────────────────────────
   const GY = 70;
 
-  // ── Pixel font ────────────────────────────────────────────
   const FONT = {
     ' ':[[0]],
     'I':[[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]],
@@ -80,32 +61,25 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
     }
   }
 
-  // ── Player ────────────────────────────────────────────────
-  // frame: 0/1=walk  2=kick  3=celebrate
   function drawPlayer(ox, oy, shirtA, shirtB, facingLeft, frame, armsUp){
     g.save();
     if(facingLeft){ g.translate((ox+10)*SC,0); g.scale(-1,1); ox=0; }
 
     const fr=frame;
-    // Shadow
     bk(ox+1,oy+16,8,1,'rgba(0,0,0,0.2)');
 
-    // HEAD
-    bk(ox+3,oy,   4,1, C.hr);           // hair top
-    bk(ox+2,oy+1, 6,4, C.sk);           // face
-    px(ox+2,oy+1, C.hr); px(ox+7,oy+1, C.hr); // sideburn
-    px(ox+3,oy+2, '#1a0800'); px(ox+6,oy+2,'#1a0800'); // eyes
-    px(ox+4,oy+4, C.skS);               // chin shadow
+    bk(ox+3,oy,   4,1, C.hr);           
+    bk(ox+2,oy+1, 6,4, C.sk);       
+    px(ox+2,oy+1, C.hr); px(ox+7,oy+1, C.hr); 
+    px(ox+3,oy+2, '#1a0800'); px(ox+6,oy+2,'#1a0800'); 
+    px(ox+4,oy+4, C.skS);             
 
-    // NECK
     bk(ox+4,oy+5,2,1,C.sk);
 
-    // BODY
     bk(ox+2,oy+6, 6,5, shirtA);
-    bk(ox+2,oy+6, 1,5, shirtB);         // left shadow
-    px(ox+4,oy+6,C.wh); px(ox+5,oy+6,C.wh); // collar
+    bk(ox+2,oy+6, 1,5, shirtB);        
+    px(ox+4,oy+6,C.wh); px(ox+5,oy+6,C.wh); 
 
-    // ARMS
     if(armsUp){
       bk(ox+0,oy+4,2,3,shirtA); px(ox+0,oy+3,C.sk); px(ox+0,oy+2,C.sk);
       bk(ox+8,oy+4,2,3,shirtA); px(ox+9,oy+3,C.sk); px(ox+9,oy+2,C.sk);
@@ -118,16 +92,12 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
       bk(ox+8,oy+6-sw,2,3,shirtA); px(ox+9,oy+9-sw,C.sk);
     }
 
-    // SHORTS
     bk(ox+2,oy+11,6,2,C.sh);
     px(ox+2,oy+12,C.shS); px(ox+7,oy+12,C.shS);
 
-    // LEGS
     if(fr===2){
-      // standing leg
       bk(ox+2,oy+13,2,3,C.sk1); px(ox+2,oy+14,C.sk2);
       bk(ox+2,oy+16,3,1,C.shoe);
-      // kicking leg (raised)
       bk(ox+6,oy+11,3,2,C.sk1);
       bk(ox+7,oy+10,3,1,C.shoe);
     } else if(fr===3){
@@ -142,7 +112,6 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
     g.restore();
   }
 
-  // ── Ball ─────────────────────────────────────────────────
   function drawBall(bx,by,spin){
     const s=Math.floor(spin)%4;
     bk(bx+1,by,  4,1,C.ba); bk(bx,by+1,6,4,C.ba); bk(bx+1,by+5,4,1,C.ba);
@@ -152,7 +121,6 @@ const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 
     bk(bx+1,by+6,4,1,'rgba(0,0,0,0.2)');
   }
 
-  // ── Goal ──────────────────────────────────────────────────
   function drawGoal(gx,gy){
     bk(gx,gy-14,1,14,C.po); bk(gx+12,gy-14,1,14,C.po); bk(gx,gy-14,13,1,C.po);
     for(let y=gy-13;y<gy;y+=2) for(let x2=gx+1;x2<gx+12;x2+=2)

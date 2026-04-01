@@ -52,49 +52,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const GROUP_IDS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
 const BASE_TEAMS = {
-  A: ['México', 'Sudáfrica', 'Corea del Sur', 'Ganador rep. UEFA D'],
-  B: ['Canadá', 'Ganador rep. UEFA A', 'Catar', 'Suiza'],
+  A: ['México', 'Sudáfrica', 'Corea del Sur', 'República Checa'],
+  B: ['Canadá', 'Bosnia & Herzegovina', 'Catar', 'Suiza'],
   C: ['Brasil', 'Marruecos', 'Haití', 'Escocia'],
-  D: ['Estados Unidos', 'Paraguay', 'Australia', 'Ganador rep. UEFA C'],
+  D: ['Estados Unidos', 'Paraguay', 'Australia', 'Turquía'],
   E: ['Alemania', 'Curazao', 'Costa de Marfil', 'Ecuador'],
-  F: ['Países Bajos', 'Japón', 'Ganador rep. UEFA B', 'Túnez'],
+  F: ['Países Bajos', 'Japón', 'Suecia', 'Túnez'],
   G: ['Bélgica', 'Egipto', 'Irán', 'Nueva Zelanda'],
   H: ['España', 'Cabo Verde', 'Arabia Saudita', 'Uruguay'],
-  I: ['Francia', 'Sénégal', 'Ganador rep. inter-conf 2', 'Noruega'],
+  I: ['Francia', 'Sénégal', 'Irak', 'Noruega'],
   J: ['Argentina', 'Argelia', 'Austria', 'Jordania'],
-  K: ['Portugal', 'Ganador rep. inter-conf 1', 'Uzbekistán', 'Colombia'],
+  K: ['Portugal', 'República Democrática del Congo', 'Uzbekistán', 'Colombia'],
   L: ['Inglaterra', 'Croacia', 'Ghana', 'Panamá']
 };
 const GROUP_TEAMS = JSON.parse(JSON.stringify(BASE_TEAMS));
 
 const FLAGS = {
-  'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'Canadá': 'ca', 'Catar': 'qa', 'Suiza': 'ch',
-  'Brasil': 'br', 'Marruecos': 'ma', 'Haití': 'ht', 'Escocia': 'gb-sct', 'Estados Unidos': 'us',
-  'Paraguay': 'py', 'Australia': 'au', 'Alemania': 'de', 'Curazao': 'cw', 'Costa de Marfil': 'ci',
-  'Ecuador': 'ec', 'Países Bajos': 'nl', 'Japón': 'jp', 'Túnez': 'tn', 'Bélgica': 'be', 'Egipto': 'eg',
+  'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'República Checa' : 'cz', 'Canadá': 'ca', 'Bosnia & Herzegovina': 'ba', 
+  'Catar': 'qa', 'Suiza': 'ch', 'Brasil': 'br', 'Marruecos': 'ma', 'Haití': 'ht', 'Escocia': 'gb-sct', 'Estados Unidos': 'us',
+  'Paraguay': 'py', 'Australia': 'au', 'Turquía' : 'tr', 'Alemania': 'de', 'Curazao': 'cw', 'Costa de Marfil': 'ci',
+  'Ecuador': 'ec', 'Países Bajos': 'nl', 'Japón': 'jp', 'Suecia' : 'se', 'Túnez': 'tn', 'Bélgica': 'be', 'Egipto': 'eg',
   'Irán': 'ir', 'Nueva Zelanda': 'nz', 'España': 'es', 'Cabo Verde': 'cv', 'Arabia Saudita': 'sa',
-  'Uruguay': 'uy', 'Francia': 'fr', 'Sénégal': 'sn', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
-  'Austria': 'at', 'Jordania': 'jo', 'Portugal': 'pt', 'Uzbekistán': 'uz', 'Colombia': 'co',
+  'Uruguay': 'uy', 'Francia': 'fr', 'Sénégal': 'sn', 'Irak' : 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
+  'Austria': 'at', 'Jordania': 'jo', 'Portugal': 'pt','República Democrática del Congo': 'cd', 'Uzbekistán': 'uz', 'Colombia': 'co',
   'Inglaterra': 'gb-eng', 'Croacia': 'hr', 'Ghana': 'gh', 'Panamá': 'pa'
 };
 
 const POOL_TEAMS = [
-  { name: 'México', code: 'mx' }, { name: 'Sudáfrica', code: 'za' }, { name: 'Corea del Sur', code: 'kr' },
-  { name: 'Canadá', code: 'ca' }, { name: 'Suiza', code: 'ch' }, { name: 'Brasil', code: 'br' },
-  { name: 'Marruecos', code: 'ma' }, { name: 'Haití', code: 'ht' }, { name: 'Escocia', code: 'gb-sct' },
-  { name: 'Estados Unidos', code: 'us' }, { name: 'Paraguay', code: 'py' }, { name: 'Australia', code: 'au' },
-  { name: 'Alemania', code: 'de' }, { name: 'Ecuador', code: 'ec' }, { name: 'Costa de Marfil', code: 'ci' },
-  { name: 'Países Bajos', code: 'nl' }, { name: 'Japón', code: 'jp' }, { name: 'Bélgica', code: 'be' },
-  { name: 'Egipto', code: 'eg' }, { name: 'Irán', code: 'ir' }, { name: 'Nueva Zelanda', code: 'nz' },
-  { name: 'España', code: 'es' }, { name: 'Uruguay', code: 'uy' }, { name: 'Arabia Saudita', code: 'sa' },
-  { name: 'Francia', code: 'fr' }, { name: 'Sénégal', code: 'sn' }, { name: 'Noruega', code: 'no' },
-  { name: 'Argentina', code: 'ar' }, { name: 'Argelia', code: 'dz' }, { name: 'Austria', code: 'at' },
-  { name: 'Portugal', code: 'pt' }, { name: 'Colombia', code: 'co' }, { name: 'Uzbekistán', code: 'uz' },
-  { name: 'Inglaterra', code: 'gb-eng' }, { name: 'Croacia', code: 'hr' }, { name: 'Ghana', code: 'gh' },
-  { name: 'Panamá', code: 'pa' }
+  { name: 'México', code: 'mx' }, { name: 'Sudáfrica', code: 'za' }, { name: 'República Checa', code: 'cz' }, { name: 'Corea del Sur', code: 'kr' },
+  { name: 'Canadá', code: 'ca' }, { name: 'Bosnia & Herzegovina', code: 'ba' }, { name: 'Suiza', code: 'ch' }, { name: 'Catar', code: 'qa' },                 
+  { name: 'Brasil', code: 'br' }, { name: 'Marruecos', code: 'ma' }, { name: 'Haití', code: 'ht' }, { name: 'Escocia', code: 'gb-sct' },
+  { name: 'Estados Unidos', code: 'us' }, { name: 'Paraguay', code: 'py' }, { name: 'Australia', code: 'au' }, { name: 'Turquía', code: 'tr' },               
+  { name: 'Alemania', code: 'de' }, { name: 'Curazao', code: 'cw' }, { name: 'Costa de Marfil', code: 'ci' }, { name: 'Ecuador', code: 'ec' },
+  { name: 'Países Bajos', code: 'nl' }, { name: 'Japón', code: 'jp' }, { name: 'Suecia', code: 'se' }, { name: 'Túnez', code: 'tn' },
+  { name: 'Bélgica', code: 'be' }, { name: 'Egipto', code: 'eg' }, { name: 'Irán', code: 'ir' }, { name: 'Nueva Zelanda', code: 'nz' },
+  { name: 'España', code: 'es' }, { name: 'Cabo Verde', code: 'cv' }, { name: 'Arabia Saudita', code: 'sa' }, { name: 'Uruguay', code: 'uy' },
+  { name: 'Francia', code: 'fr' }, { name: 'Sénégal', code: 'sn' }, { name: 'Irak', code: 'iq' }, { name: 'Noruega', code: 'no' },
+  { name: 'Argentina', code: 'ar' }, { name: 'Argelia', code: 'dz' }, { name: 'Austria', code: 'at' }, { name: 'Jordania', code: 'jo' },
+  { name: 'Portugal', code: 'pt' }, { name: 'República Democrática del Congo', code: 'cd' }, { name: 'Uzbekistán', code: 'uz' }, { name: 'Colombia', code: 'co' },
+  { name: 'Inglaterra', code: 'gb-eng' }, { name: 'Croacia', code: 'hr' }, { name: 'Ghana', code: 'gh' }, { name: 'Panamá', code: 'pa' }
 ];
 
-// Bracket config
 const BRACKET = {
   R32: [
     { id: 'R32-1', num: 73, slot1: '2A', slot2: '2B' }, { id: 'R32-2', num: 74, slot1: '1E', thirds: ['A', 'B', 'C', 'D', 'F'] },
@@ -217,7 +215,6 @@ function validateStep1() {
   return ok;
 }
 
-// Type card selection
 document.querySelectorAll('.type-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.type-card').forEach(c => c.classList.remove('sel'));
