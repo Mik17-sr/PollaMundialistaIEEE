@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polla Mundialista IEEE 2026 — Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon"><i class="bi bi-dribbble"></i></div>
+    IEEE Polla Mundialista
+  </div>
+  <span class="nav-badge"><i class="bi bi-trophy-fill"></i> Leaderboard</span>
+</nav>
+
+<div class="page">
+  <div class="lb-header">
+    <div class="lb-title">Tabla de <span>Posiciones</span></div>
+    <div style="font-size:.75rem;color:var(--text-m);" id="last-updated">Cargando datos…</div>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab active" onclick="switchTab('free', this)">
+      <i class="bi bi-ticket-perforated"></i> Polla Gratis
+    </button>
+    <button class="tab" onclick="switchTab('3000', this)">
+      <i class="bi bi-trophy"></i> Polla $3.000
+    </button>
+  </div>
+
+  <div class="card" id="lb-card">
+    <div class="loading-state"><div class="spinner"></div> Cargando predicciones…</div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <h3 id="modal-title"><i class="bi bi-clipboard-data"></i> Detalle de Predicción</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="lead.js"></script>
+</body>
+</html>
