@@ -29,10 +29,11 @@ foreach (query($conn, "SELECT * FROM real_eliminatorias") as $re) {
 }
 
 
-$real_thirds_rows = query($conn, "SELECT grupo FROM real_terceros");
-$real_thirds = array_column($real_thirds_rows, 'grupo'); 
-
-
+$real_thirds = query($conn, "
+    SELECT rt.grupo, rg.tercero AS equipo
+    FROM real_terceros rt
+    INNER JOIN real_grupos rg ON rg.grupo = rt.grupo
+");
 
 $preds = query($conn, "
     SELECT p.*, u.nombre, u.codigo, u.correo, u.telefono, u.proyecto
@@ -90,9 +91,21 @@ foreach (query($conn, "SELECT * FROM preguntas_extra WHERE id_prediccion IN ($in
     $preguntas[$row['id_prediccion']] = $row;
 }
 
+
 $terceros = [];
 foreach (query($conn, "SELECT * FROM terceros WHERE id_prediccion IN ($in)") as $row) {
-    $terceros[$row['id_prediccion']][] = $row['grupo'];
+    $id = $row['id_prediccion'];
+    $grupo = $row['grupo'];
+    $grupoData = null;
+    foreach ($grupos[$id] ?? [] as $g) {
+        if ($g['grupo'] === $grupo) {
+            $grupoData = $g;
+            break;
+        }
+    }
+    if ($grupoData && isset($grupoData['tercero'])) {
+        $terceros[$id][] = $grupoData['tercero'];
+    }
 }
 
 

@@ -74,14 +74,16 @@ function calcPts3000(pred, real, id_pred, predGrupos, predElim, predTerceros){
   let grupoDet = [], tercerosDet = [], elimDet = [], podioDet = []; 
 
    const realThirds = real.terceros || [];
-  for (const grupo of (predTerceros || [])) {
-    if (realThirds.includes(grupo)) {
-      sections.terceros += 4;
-      tercerosDet.push({ grupo, pts: 4, reason: 'Tercero clasificado +4' });
-    } else {
-      tercerosDet.push({ grupo, pts: 0, reason: 'No clasificó' });
-    }
+const realThirdTeams = realThirds.map(t => t.equipo);
+
+for (const equipo of (predTerceros || [])) {
+  if (realThirdTeams.includes(equipo)) {
+    sections.terceros += 4;
+    tercerosDet.push({ equipo, pts: 4, reason: 'Tercero correcto +4' });
+  } else {
+    tercerosDet.push({ equipo, pts: 0, reason: 'No clasificó' });
   }
+}
 
 
   const realGrupos = real.grupos || {};
@@ -498,18 +500,20 @@ function openModal(predId) {
       html += '</div>';
     }
 
-    /* Bracket visual: mejores terceros + eliminatorias */
     if (d.thirds && d.thirds.length) {
     html += `<div class="sec-lbl"><i class="bi bi-3-circle-fill"></i> Mejores Terceros</div>`;
     html += `<div class="pred-list">`;
     d.thirds.forEach(grupo => {
-        const det = (r.tercerosDet || []).find(x => x.grupo === grupo);
+        const det = (r.tercerosDet || []).find(x => x.equipo === grupo);
         const pts = det ? det.pts : 0;
         const cls = pts > 0 ? 'pts-pos' : 'pts-neg';
         const reason = det ? det.reason : 'Sin resultado aún';
         html += `<div class="pred-row">
         <span class="pred-row-icon"><i class="bi bi-3-circle-fill" style="color:var(--accent-l);"></i></span>
-        <div class="pred-row-team"><span style="font-weight:600;">Grupo ${grupo}</span></div>
+        <span class="g-team-name-wrap">
+            ${flagImg(grupo, 20)}
+            <span style="font-weight:600;">${grupo}</span>
+        </span>
         <div class="pred-row-right">
             <span class="pts-earned ${cls}">${pts > 0 ? '+' + pts : '0'} pts</span>
             <span class="pred-row-reason">${reason}</span>
