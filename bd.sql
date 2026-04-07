@@ -128,3 +128,9 @@ CREATE TABLE real_preguntas_extra (
   seleccion_defensa VARCHAR(100),
   prorroga_final    ENUM('si','no') NULL
 );
+CREATE TABLE admins (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  usuario VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL
+);
