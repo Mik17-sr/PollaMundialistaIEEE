@@ -1,3 +1,4 @@
+USE polla_db;
 CREATE TABLE usuario (
   id        INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nombre    VARCHAR(150) NOT NULL,
@@ -129,8 +130,15 @@ CREATE TABLE real_preguntas_extra (
   prorroga_final    ENUM('si','no') NULL
 );
 CREATE TABLE admins (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  usuario VARCHAR(50) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL
+  id            INT(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  nombre        VARCHAR(100) NOT NULL,
+  usuario       VARCHAR(50)  NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO admins (nombre, usuario, password_hash) VALUES (
+  'Administrador',
+  'admin',
+  '$2y$10$eLnYSug2WM/oxIZfYSLVvOy65U3ZncmrX8lvpXpyEuEHYOrH1H2sS'
 );
