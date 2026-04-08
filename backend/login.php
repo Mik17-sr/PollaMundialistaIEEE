@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario_input = trim($_POST['usuario'] ?? '');
     $pass_input    = $_POST['password'] ?? '';
 
-    // Rate limiting por sesión
     if (!isset($_SESSION['intentos']))      $_SESSION['intentos']      = 0;
     if (!isset($_SESSION['ultimo_intento'])) $_SESSION['ultimo_intento'] = 0;
 

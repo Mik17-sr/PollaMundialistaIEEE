@@ -9,7 +9,7 @@ const FLAGS = {
   'Países Bajos': 'nl', 'Japón': 'jp', 'Suecia': 'se', 'Túnez': 'tn',
   'Bélgica': 'be', 'Egipto': 'eg', 'Irán': 'ir', 'Nueva Zelanda': 'nz',
   'España': 'es', 'Cabo Verde': 'cv', 'Arabia Saudita': 'sa', 'Uruguay': 'uy',
-  'Francia': 'fr', 'Sénégal': 'sn', 'Irak': 'iq', 'Noruega': 'no',
+  'Francia': 'fr', 'Senegal': 'sn', 'Irak': 'iq', 'Noruega': 'no',
   'Argentina': 'ar', 'Argelia': 'dz', 'Austria': 'at', 'Jordania': 'jo',
   'Portugal': 'pt', 'República Democrática del Congo': 'cd', 'Uzbekistán': 'uz',
   'Colombia': 'co', 'Inglaterra': 'gb-eng', 'Croacia': 'hr', 'Ghana': 'gh', 'Panamá': 'pa'

@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$user = "polla_user";
+$user = "root";
 $pass = "admin7942_";
 $db = "polla_db";
 

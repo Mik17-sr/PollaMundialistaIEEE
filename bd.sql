@@ -138,7 +138,7 @@ CREATE TABLE admins (
 );
 
 INSERT INTO admins (nombre, usuario, password_hash) VALUES (
-  'Administrador',
-  'admin',
-  '$2y$10$eLnYSug2WM/oxIZfYSLVvOy65U3ZncmrX8lvpXpyEuEHYOrH1H2sS'
+  'ieeetecno',
+  'ieeetecno',
+  '$2y$10$eXpyNEI6kHHmbeO2/R6cSux1UQ.w0JaWfizgHL1OZy/tsIG0G0Xey'
 );

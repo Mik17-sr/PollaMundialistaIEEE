@@ -20,13 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
             nombre.value = data.nombre;
             nombre.readOnly = true;
             nombre.style.color = '#333'; 
-            ['correo', 'telefono', 'proyecto'].forEach(campo => {
+            ['correo', 'telefono'].forEach(campo => {
               const el = document.getElementById(campo);
               el.value = data[campo];
               el.readOnly = true;
-              el.style.color = '#bbb';       
-              el.style.letterSpacing = '2px'; 
+              el.style.color = '#bbb';
+              el.style.letterSpacing = '2px';
             });
+            const proyecto = document.getElementById('proyecto');
+            proyecto.value = data.proyecto;
+            proyecto.disabled = true;
+            proyecto.style.color = '#bbb';
           }
           else {
             indicator.textContent = "✗ Código no registrado";
@@ -39,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
               el.style.color = '';
               el.style.letterSpacing = '';
           });
+          document.getElementById('proyecto').disabled = false; 
           }
         })
         .catch(() => {
@@ -60,7 +65,7 @@ const BASE_TEAMS = {
   F: ['Países Bajos', 'Japón', 'Suecia', 'Túnez'],
   G: ['Bélgica', 'Egipto', 'Irán', 'Nueva Zelanda'],
   H: ['España', 'Cabo Verde', 'Arabia Saudita', 'Uruguay'],
-  I: ['Francia', 'Sénégal', 'Irak', 'Noruega'],
+  I: ['Francia', 'Senegal', 'Irak', 'Noruega'],
   J: ['Argentina', 'Argelia', 'Austria', 'Jordania'],
   K: ['Portugal', 'República Democrática del Congo', 'Uzbekistán', 'Colombia'],
   L: ['Inglaterra', 'Croacia', 'Ghana', 'Panamá']
@@ -73,7 +78,7 @@ const FLAGS = {
   'Paraguay': 'py', 'Australia': 'au', 'Turquía' : 'tr', 'Alemania': 'de', 'Curazao': 'cw', 'Costa de Marfil': 'ci',
   'Ecuador': 'ec', 'Países Bajos': 'nl', 'Japón': 'jp', 'Suecia' : 'se', 'Túnez': 'tn', 'Bélgica': 'be', 'Egipto': 'eg',
   'Irán': 'ir', 'Nueva Zelanda': 'nz', 'España': 'es', 'Cabo Verde': 'cv', 'Arabia Saudita': 'sa',
-  'Uruguay': 'uy', 'Francia': 'fr', 'Sénégal': 'sn', 'Irak' : 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
+  'Uruguay': 'uy', 'Francia': 'fr', 'Senegal': 'sn', 'Irak' : 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
   'Austria': 'at', 'Jordania': 'jo', 'Portugal': 'pt','República Democrática del Congo': 'cd', 'Uzbekistán': 'uz', 'Colombia': 'co',
   'Inglaterra': 'gb-eng', 'Croacia': 'hr', 'Ghana': 'gh', 'Panamá': 'pa'
 };
@@ -87,7 +92,7 @@ const POOL_TEAMS = [
   { name: 'Países Bajos', code: 'nl' }, { name: 'Japón', code: 'jp' }, { name: 'Suecia', code: 'se' }, { name: 'Túnez', code: 'tn' },
   { name: 'Bélgica', code: 'be' }, { name: 'Egipto', code: 'eg' }, { name: 'Irán', code: 'ir' }, { name: 'Nueva Zelanda', code: 'nz' },
   { name: 'España', code: 'es' }, { name: 'Cabo Verde', code: 'cv' }, { name: 'Arabia Saudita', code: 'sa' }, { name: 'Uruguay', code: 'uy' },
-  { name: 'Francia', code: 'fr' }, { name: 'Sénégal', code: 'sn' }, { name: 'Irak', code: 'iq' }, { name: 'Noruega', code: 'no' },
+  { name: 'Francia', code: 'fr' }, { name: 'Senegal', code: 'sn' }, { name: 'Irak', code: 'iq' }, { name: 'Noruega', code: 'no' },
   { name: 'Argentina', code: 'ar' }, { name: 'Argelia', code: 'dz' }, { name: 'Austria', code: 'at' }, { name: 'Jordania', code: 'jo' },
   { name: 'Portugal', code: 'pt' }, { name: 'República Democrática del Congo', code: 'cd' }, { name: 'Uzbekistán', code: 'uz' }, { name: 'Colombia', code: 'co' },
   { name: 'Inglaterra', code: 'gb-eng' }, { name: 'Croacia', code: 'hr' }, { name: 'Ghana', code: 'gh' }, { name: 'Panamá', code: 'pa' }
@@ -172,7 +177,7 @@ function nextStep() {
       if (!validatePodium()) return;
     } else {
       if (!knockoutWinners['F-1']) { alert('Completa el bracket y selecciona un campeón para continuar.'); return; }
-      if (!knockoutWinners['TP-1']) { alert('Selecciona el ganador del partido por el 3.er puesto (🥉 P103) para continuar.'); return; }
+      if (!knockoutWinners['TP-1']) { alert('Selecciona el ganador del partido por el 3.er puesto (P103) para continuar.'); return; }
     }
     currentStep = 3;
     buildConfirm();
@@ -199,7 +204,7 @@ function validateStep1() {
   const checks = [
     { id: 'fg-nombre', val: () => document.getElementById('nombre').value.trim().length > 1 },
     { id: 'fg-codigo', val: () => document.getElementById('codigo').value.trim().length > 4 },
-    { id: 'fg-correo', val: () => /^.+@udistrital\.edu\.co$/.test(document.getElementById('correo').value.trim()) },
+    { id: 'fg-correo', val: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('correo').value.trim()) },
     { id: 'fg-telefono', val: () => document.getElementById('telefono').value.trim().length >= 7 },
     { id: 'fg-proyecto', val: () => document.getElementById('proyecto').value !== '' },
   ];

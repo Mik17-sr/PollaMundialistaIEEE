@@ -1432,3 +1432,55 @@ footer {
 .pdot.active { background:var(--accent); box-shadow:0 0 6px rgba(245,158,11,.5); }
 
 @media(max-width:1024px){ .pixel-scene-wrapper{ order:0; margin:0 auto; } }
+
+.instructor-image img {
+  filter: brightness(0) invert(1); 
+}
+
+.instructor-card:hover .instructor-image img {
+  filter: none; 
+}
+
+/* Help Section */
+.help {
+  padding: 6rem 2rem;
+}
+
+.help-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  transition: all 0.3s;
+}
+
+.help-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.help-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.help-content p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.help-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.help-number {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
