@@ -4,7 +4,6 @@ $user = "root";
 $pass = "admin7942_";
 $db = "polla_db";
 */
-
 $host = "maglev.proxy.rlwy.net";
 $port = 55559;
 $user = "root"; 
