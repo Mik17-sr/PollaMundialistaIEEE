@@ -165,7 +165,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
 .podium-team-name{font-size:.75rem;font-weight:700;}
 .podium-pts{font-size:.65rem;font-weight:700;margin-top:.1rem;}
 
-/* No-real warning */
 .no-real{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:9px;padding:.65rem .9rem;font-size:.76rem;color:var(--warn);display:flex;align-items:center;gap:.5rem;}
 
 /* Loading */
@@ -289,7 +288,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   flex-shrink: 0;
 }
 
-/* Chips de mejores terceros */
 .thirds-chips {
   display: flex;
   flex-wrap: wrap;
@@ -315,7 +313,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   font-weight: 500;
 }
 
-/* TABLA */
 .lb-table {
   width: 100%;
   border-collapse: collapse;
@@ -340,7 +337,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   cursor: pointer;
 }
 
-/* BOTÓN BONITO */
 .btn-info {
   display: inline-flex;
   align-items: center;
@@ -360,7 +356,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   transform: translateY(-1px);
 }
 
-/* BADGE */
 .code-pill {
   background: #111827;
   padding: 4px 8px;
@@ -369,7 +364,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   color: #9ca3af;
 }
 
-/* PUNTOS */
 .pts-cell {
   font-weight: bold;
   font-size: 0.9rem;
@@ -381,13 +375,11 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   color: #6b7280;
 }
 
-/* RANK */
 .rank-num {
   font-weight: bold;
   color: #9ca3af;
 }
 
-/* ICONOS */
 .bi {
   font-size: 0.9rem;
 }
@@ -396,4 +388,14 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
   opacity: 0.5;
   font-style: italic;
   text-align: center;
+}
+
+.logo {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--text-primary);
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
