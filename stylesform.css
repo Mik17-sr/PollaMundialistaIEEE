@@ -396,3 +396,17 @@ select option{background:var(--bg-el);color:var(--text);}
   color: var(--accent-l);
   font-weight: 600;
 }
+
+
+.fields-reveal {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
+}
+
+.fields-reveal.visible {
+  max-height: 2000px;
+  opacity: 1;
+}
+

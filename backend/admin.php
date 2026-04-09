@@ -225,7 +225,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'listar_apuestas') {
 
     if ($estado !== '') {
         $stmt = $conn->prepare(
-            "SELECT p.id, u.nombre, u.codigo, u.correo, u.telefono, u.proyecto,
+            "SELECT p.id, u.nombre, u.codigo, u.correo, u.telefono, u.proyecto, u.es_ud,
                     p.tipo, p.estado, p.comprobante, p.created_at
              FROM predicciones p
              JOIN usuario u ON u.id = p.id_usuario
@@ -239,7 +239,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'listar_apuestas') {
         $stmt->bind_param('ssss', $nombre, $codigo, $carrera, $estado);
     } else {
         $stmt = $conn->prepare(
-            "SELECT p.id, u.nombre, u.codigo, u.correo, u.telefono, u.proyecto,
+            "SELECT p.id, u.nombre, u.codigo, u.correo, u.telefono, u.proyecto, u.es_ud,
                     p.tipo, p.estado, p.comprobante, p.created_at
              FROM predicciones p
              JOIN usuario u ON u.id = p.id_usuario
@@ -612,13 +612,13 @@ $stats = $conn->query("
           <table>
             <thead>
               <tr>
-                <th>#</th><th>Nombre</th><th>Código</th><th>Carrera</th>
+                <th>#</th><th>Nombre</th><th>Código</th><th>UD</th><th>Carrera</th>
                 <th>Correo</th><th>Teléfono</th><th>Tipo</th><th>Estado</th>
                 <th>Comprobante</th><th>Fecha</th><th>Acción</th>
               </tr>
             </thead>
             <tbody id="tbl-body">
-              <tr class="loading-row"><td colspan="11"><div class="spin"></div> Cargando…</tr>
+              <tr class="loading-row"><td colspan="12"><div class="spin"></div> Cargando…</tr>
             </tbody>
           </table>
         </div>
@@ -961,7 +961,7 @@ async function guardarDesempate() {
 // Apuestas
 async function cargarApuestas() {
   const body = document.getElementById('tbl-body');
-  body.innerHTML = '<tr class="loading-row"><td colspan="11"><div class="spin"></div> Cargando…</tr>';
+  body.innerHTML = '<tr class="loading-row"><td colspan="12"><div class="spin"></div> Cargando…</tr>';
   const params = new URLSearchParams({
     action: 'listar_apuestas',
     nombre: document.getElementById('f-nombre')?.value || '',
@@ -972,7 +972,7 @@ async function cargarApuestas() {
   try {
     const rows = await fetch('?' + params).then(r => r.json());
     if (!rows.length) {
-      body.innerHTML = '<tr class="empty-row"><td colspan="11"><i class="bi bi-inbox"></i> Sin resultados</tr>';
+      body.innerHTML = '<tr class="empty-row"><td colspan="12"><i class="bi bi-inbox"></i> Sin resultados</tr>';
       return;
     }
     body.innerHTML = rows.map(r => `
@@ -980,6 +980,7 @@ async function cargarApuestas() {
         <td style="color:var(--text-m);font-size:.72rem">${r.id}</td>
         <td style="font-weight:600">${esc(r.nombre)}</td>
         <td><span class="badge badge-info">${esc(r.codigo)}</span></td>
+        <td><span class="badge ${r.es_ud == 1 ? 'badge-ok' : 'badge-info'}">${r.es_ud == 1 ? 'Sí' : 'No'}</span></td>
         <td style="color:var(--text-s)">${esc(r.proyecto || '—')}</td>
         <td style="color:var(--text-s);font-size:.78rem">${esc(r.correo)}</td>
         <td style="color:var(--text-s)">${esc(r.telefono || '—')}</td>
@@ -991,7 +992,7 @@ async function cargarApuestas() {
       </tr>
     `).join('');
   } catch(e) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="11" style="color:var(--err)"><i class="bi bi-exclamation-triangle"></i> Error al cargar</tr>';
+    body.innerHTML = '<tr class="empty-row"><td colspan="12" style="color:var(--err)"><i class="bi bi-exclamation-triangle"></i> Error al cargar</tr>';
   }
 }
 

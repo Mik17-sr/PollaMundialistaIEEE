@@ -5,6 +5,7 @@ CREATE TABLE usuario (
   codigo    VARCHAR(20)  NOT NULL UNIQUE,
   correo    VARCHAR(150) NOT NULL,
   telefono  VARCHAR(20),
+  es_ud   TINYINT(1) NOT NULL DEFAULT 1,
   proyecto  VARCHAR(150)
 );
 

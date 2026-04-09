@@ -1,5 +1,73 @@
 document.addEventListener('DOMContentLoaded', function () {
   let debounceTimer = null;
+
+  document.addEventListener('click', e => {
+  const typeCard = e.target.closest('#typeRow .type-card');
+  if (!typeCard) return;
+
+  document.querySelectorAll('#typeRow .type-card').forEach(c => c.classList.remove('sel'));
+  typeCard.classList.add('sel');
+  typeCard.querySelector('input').checked = true;
+
+  const tipo = typeCard.querySelector('input').value;
+  const errEl = document.getElementById('correo-error');
+  if (errEl) {
+    errEl.textContent = tipo === 'free'
+      ? 'Ingresa tu correo institucional (@udistrital.edu.co)'
+      : 'Ingresa un correo válido';
+  }
+
+  const esUD = document.getElementById('ud-si')?.checked;
+  document.getElementById('correo').placeholder = esUD
+    ? 'usuario@udistrital.edu.co'
+    : 'tucorreo@gmail.com';
+});
+  document.querySelectorAll('#udRow .type-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const input = card.querySelector('input');
+      input.checked = true;
+      const esUD = input.value === 'si';
+
+      const reveal = document.getElementById('fieldsReveal');
+      if (!reveal.classList.contains('visible')) {
+        reveal.classList.add('visible');
+      }
+
+      document.getElementById('fg-codigo').style.display = esUD ? '' : 'none';
+      document.getElementById('fg-documento').style.display = esUD ? 'none' : '';
+
+      document.getElementById('fg-tipo').style.display = '';
+
+      const tcFree = document.getElementById('tc-free');
+      const tpFree = document.getElementById('tp-free');
+      if (!esUD) {
+        tpFree.checked = false;
+        tcFree.classList.add('disabled');
+        tcFree.style.opacity = '0.4';
+        tcFree.style.pointerEvents = 'none';
+      } else {
+        tcFree.classList.remove('disabled');
+        tcFree.style.opacity = '';
+        tcFree.style.pointerEvents = '';
+      }
+      const errCorreo = document.getElementById('correo-error');
+      if (errCorreo) {
+        errCorreo.textContent = esUD
+          ? 'Ingresa tu correo institucional (@udistrital.edu.co)'
+          : 'Ingresa un correo válido';
+      }
+      const correoInput = document.getElementById('correo');
+      updateCorreoPlaceholder();
+
+      ['nombre', 'correo', 'telefono'].forEach(id => {
+        const el = document.getElementById(id);
+        el.value = ''; el.readOnly = false;
+        el.style.color = ''; el.style.letterSpacing = '';
+      });
+      document.getElementById('proyecto').disabled = false;
+      document.getElementById('codigo-status').textContent = '';
+    });
+  });
   document.getElementById("codigo").addEventListener("input", function () {
     const codigo = this.value.trim();
     const indicator = document.getElementById("codigo-status");
@@ -19,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const nombre = document.getElementById('nombre');
             nombre.value = data.nombre;
             nombre.readOnly = true;
-            nombre.style.color = '#333'; 
+            nombre.style.color = '#333';
             ['correo', 'telefono'].forEach(campo => {
               const el = document.getElementById(campo);
               el.value = data[campo];
@@ -36,14 +104,14 @@ document.addEventListener('DOMContentLoaded', function () {
             indicator.textContent = "✗ Código no registrado";
             indicator.className = "status-err";
 
-            ['nombre','correo','telefono','proyecto'].forEach(campo => {
+            ['nombre', 'correo', 'telefono', 'proyecto'].forEach(campo => {
               const el = document.getElementById(campo);
               el.value = '';
               el.readOnly = false;
               el.style.color = '';
               el.style.letterSpacing = '';
-          });
-          document.getElementById('proyecto').disabled = false; 
+            });
+            document.getElementById('proyecto').disabled = false;
           }
         })
         .catch(() => {
@@ -53,7 +121,59 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 400);
   });
 
+  document.getElementById("documento").addEventListener("input", function () {
+  const documento = this.value.trim();
+  const indicator = document.getElementById("documento-status");
+  if (!documento || documento.length < 5) {
+    indicator.textContent = "";
+    indicator.className = "";
+    return;
+  }
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    fetch("backend/buscar_usuario.php?codigo=" + encodeURIComponent(documento))  
+      .then(res => res.json())
+      .then(data => {
+        if (data.existe) {
+          indicator.textContent = "✓ Identificación encontrada";
+          indicator.className = "status-ok";
+          const nombre = document.getElementById('nombre');
+          nombre.value = data.nombre;
+          nombre.readOnly = true;
+          nombre.style.color = '#333';
+          ['correo', 'telefono'].forEach(campo => {
+            const el = document.getElementById(campo);
+            el.value = data[campo];
+            el.readOnly = true;
+            el.style.color = '#bbb';
+            el.style.letterSpacing = '2px';
+          });
+          const proyecto = document.getElementById('proyecto');
+          proyecto.value = data.proyecto;
+          proyecto.disabled = true;
+          proyecto.style.color = '#bbb';
+        } else {
+           indicator.textContent = "✗ Identificación no encontrada";
+          indicator.className = "status-err";
+          ['nombre', 'correo', 'telefono', 'proyecto'].forEach(campo => {
+            const el = document.getElementById(campo);
+            el.value = '';
+            el.readOnly = false;
+            el.style.color = '';
+            el.style.letterSpacing = '';
+          });
+          document.getElementById('proyecto').disabled = false;
+        }
+      })
+      .catch(() => {
+        indicator.textContent = "⚠ Error de conexión";
+        indicator.className = "status-err";
+      });
+  }, 400);
 });
+});
+
+
 
 const GROUP_IDS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
 const BASE_TEAMS = {
@@ -73,21 +193,21 @@ const BASE_TEAMS = {
 const GROUP_TEAMS = JSON.parse(JSON.stringify(BASE_TEAMS));
 
 const FLAGS = {
-  'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'República Checa' : 'cz', 'Canadá': 'ca', 'Bosnia & Herzegovina': 'ba', 
+  'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'República Checa': 'cz', 'Canadá': 'ca', 'Bosnia & Herzegovina': 'ba',
   'Catar': 'qa', 'Suiza': 'ch', 'Brasil': 'br', 'Marruecos': 'ma', 'Haití': 'ht', 'Escocia': 'gb-sct', 'Estados Unidos': 'us',
-  'Paraguay': 'py', 'Australia': 'au', 'Turquía' : 'tr', 'Alemania': 'de', 'Curazao': 'cw', 'Costa de Marfil': 'ci',
-  'Ecuador': 'ec', 'Países Bajos': 'nl', 'Japón': 'jp', 'Suecia' : 'se', 'Túnez': 'tn', 'Bélgica': 'be', 'Egipto': 'eg',
+  'Paraguay': 'py', 'Australia': 'au', 'Turquía': 'tr', 'Alemania': 'de', 'Curazao': 'cw', 'Costa de Marfil': 'ci',
+  'Ecuador': 'ec', 'Países Bajos': 'nl', 'Japón': 'jp', 'Suecia': 'se', 'Túnez': 'tn', 'Bélgica': 'be', 'Egipto': 'eg',
   'Irán': 'ir', 'Nueva Zelanda': 'nz', 'España': 'es', 'Cabo Verde': 'cv', 'Arabia Saudita': 'sa',
-  'Uruguay': 'uy', 'Francia': 'fr', 'Senegal': 'sn', 'Irak' : 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
-  'Austria': 'at', 'Jordania': 'jo', 'Portugal': 'pt','República Democrática del Congo': 'cd', 'Uzbekistán': 'uz', 'Colombia': 'co',
+  'Uruguay': 'uy', 'Francia': 'fr', 'Senegal': 'sn', 'Irak': 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argelia': 'dz',
+  'Austria': 'at', 'Jordania': 'jo', 'Portugal': 'pt', 'República Democrática del Congo': 'cd', 'Uzbekistán': 'uz', 'Colombia': 'co',
   'Inglaterra': 'gb-eng', 'Croacia': 'hr', 'Ghana': 'gh', 'Panamá': 'pa'
 };
 
 const POOL_TEAMS = [
   { name: 'México', code: 'mx' }, { name: 'Sudáfrica', code: 'za' }, { name: 'República Checa', code: 'cz' }, { name: 'Corea del Sur', code: 'kr' },
-  { name: 'Canadá', code: 'ca' }, { name: 'Bosnia & Herzegovina', code: 'ba' }, { name: 'Suiza', code: 'ch' }, { name: 'Catar', code: 'qa' },                 
+  { name: 'Canadá', code: 'ca' }, { name: 'Bosnia & Herzegovina', code: 'ba' }, { name: 'Suiza', code: 'ch' }, { name: 'Catar', code: 'qa' },
   { name: 'Brasil', code: 'br' }, { name: 'Marruecos', code: 'ma' }, { name: 'Haití', code: 'ht' }, { name: 'Escocia', code: 'gb-sct' },
-  { name: 'Estados Unidos', code: 'us' }, { name: 'Paraguay', code: 'py' }, { name: 'Australia', code: 'au' }, { name: 'Turquía', code: 'tr' },               
+  { name: 'Estados Unidos', code: 'us' }, { name: 'Paraguay', code: 'py' }, { name: 'Australia', code: 'au' }, { name: 'Turquía', code: 'tr' },
   { name: 'Alemania', code: 'de' }, { name: 'Curazao', code: 'cw' }, { name: 'Costa de Marfil', code: 'ci' }, { name: 'Ecuador', code: 'ec' },
   { name: 'Países Bajos', code: 'nl' }, { name: 'Japón', code: 'jp' }, { name: 'Suecia', code: 'se' }, { name: 'Túnez', code: 'tn' },
   { name: 'Bélgica', code: 'be' }, { name: 'Egipto', code: 'eg' }, { name: 'Irán', code: 'ir' }, { name: 'Nueva Zelanda', code: 'nz' },
@@ -164,6 +284,7 @@ function showPanel(id) {
   if (el) el.classList.add('active');
 }
 
+
 function nextStep() {
   if (currentStep === 1) {
     if (!validateStep1()) return;
@@ -203,8 +324,31 @@ function validateStep1() {
   let ok = true;
   const checks = [
     { id: 'fg-nombre', val: () => document.getElementById('nombre').value.trim().length > 1 },
-    { id: 'fg-codigo', val: () => document.getElementById('codigo').value.trim().length > 4 },
-    { id: 'fg-correo', val: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('correo').value.trim()) },
+    { id: 'fg-esud', val: () => !!document.querySelector('input[name="esUD"]:checked') },
+    {
+      id: 'fg-codigo', val: () => {
+        if (document.getElementById('ud-no')?.checked) return true;
+        return document.getElementById('codigo').value.trim().length >= 5;
+      }
+    },
+
+    {
+      id: 'fg-documento', val: () => {
+        if (document.getElementById('ud-si')?.checked) return true;
+        return document.getElementById('documento').value.trim().length >= 5;
+      }
+    },
+    {
+      id: 'fg-correo', val: () => {
+        const correo = document.getElementById('correo').value.trim();
+        const tipoSel = document.querySelector('input[name="tipoPolla"]:checked')?.value;
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+        if (tipoSel === 'free') {
+          return emailValido && correo.endsWith('@udistrital.edu.co');
+        }
+        return emailValido;
+      }
+    },
     { id: 'fg-telefono', val: () => document.getElementById('telefono').value.trim().length >= 7 },
     { id: 'fg-proyecto', val: () => document.getElementById('proyecto').value !== '' },
   ];
@@ -220,14 +364,14 @@ function validateStep1() {
   return ok;
 }
 
-document.querySelectorAll('.type-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('sel'));
-    card.classList.add('sel');
-    card.querySelector('input').checked = true;
-  });
-});
+function updateCorreoPlaceholder() {
+  const esUD = document.getElementById('ud-si')?.checked;
+  const correoInput = document.getElementById('correo');
 
+  correoInput.placeholder = esUD
+    ? 'usuario@udistrital.edu.co'
+    : 'tucorreo@gmail.com';
+}
 
 function buildPool() {
   const pool = document.getElementById('teamsPool');
@@ -258,10 +402,10 @@ function makeTeamCard(t) {
 
   div.addEventListener('touchend', e => {
     div.classList.remove('dragging-out');
-    const touch  = e.changedTouches[0];
+    const touch = e.changedTouches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    const zone   = target?.closest('.drop-zone');
-    if(zone) dropOnZone(zone, touchDragData.team, touchDragData.code);
+    const zone = target?.closest('.drop-zone');
+    if (zone) dropOnZone(zone, touchDragData.team, touchDragData.code);
     touchDragData = null;
   });
 
@@ -272,15 +416,15 @@ let touchDragData = null;
 
 function dropOnZone(zone, team, code) {
   const rank = parseInt(zone.dataset.rank);
-  Object.keys(podiumData).forEach(r => { if(podiumData[r] === team) podiumData[r] = null; });
-  if(podiumData[rank]) returnToPool(podiumData[rank]);
+  Object.keys(podiumData).forEach(r => { if (podiumData[r] === team) podiumData[r] = null; });
+  if (podiumData[rank]) returnToPool(podiumData[rank]);
   podiumData[rank] = team;
   setZone(zone, rank, team, code);
   removeFromPool(team);
 }
 
 document.querySelectorAll('.drop-zone').forEach(zone => {
-  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
   zone.addEventListener('dragleave', () => zone.classList.remove('over'));
   zone.addEventListener('drop', e => {
     e.preventDefault(); zone.classList.remove('over');
@@ -289,7 +433,7 @@ document.querySelectorAll('.drop-zone').forEach(zone => {
 
   zone.addEventListener('touchmove', e => {
     e.preventDefault();
-    const touch  = e.touches[0];
+    const touch = e.touches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
     document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('over'));
     target?.closest('.drop-zone')?.classList.add('over');
@@ -706,7 +850,10 @@ function simNext2() {
 
 function buildConfirm() {
   document.getElementById('cs-nombre').textContent = document.getElementById('nombre').value;
-  document.getElementById('cs-codigo').textContent = document.getElementById('codigo').value;
+  const esUD = document.getElementById('ud-si')?.checked;
+  document.getElementById('cs-codigo').textContent = esUD
+    ? document.getElementById('codigo').value
+    : document.getElementById('documento').value;
   document.getElementById('cs-correo').textContent = document.getElementById('correo').value;
   document.getElementById('cs-telefono').textContent = document.getElementById('telefono').value;
   document.getElementById('cs-proyecto').textContent = document.getElementById('proyecto').value;
@@ -762,39 +909,43 @@ function submitForm() {
     return;
   }
   const formData = new FormData();
-  formData.append('nombre',     document.getElementById('nombre').value);
-  formData.append('codigo',     document.getElementById('codigo').value);
-  formData.append('correo',     document.getElementById('correo').value);
-  formData.append('telefono',   document.getElementById('telefono').value);
-  formData.append('proyecto',   document.getElementById('proyecto').value);
-  formData.append('tipo',       pollaType);
-  formData.append('campeon',    document.getElementById('cs-campeon').textContent);
+  formData.append('nombre', document.getElementById('nombre').value);
+  formData.append('codigo', document.getElementById('ud-si')?.checked
+    ? document.getElementById('codigo').value
+    : document.getElementById('documento').value
+  );
+  formData.append('correo', document.getElementById('correo').value);
+  formData.append('telefono', document.getElementById('telefono').value);
+  formData.append('proyecto', document.getElementById('proyecto').value);
+  formData.append('tipo', pollaType);
+  formData.append('es_ud', document.getElementById('ud-si')?.checked ? '1' : '0');
+  formData.append('campeon', document.getElementById('cs-campeon').textContent);
   formData.append('subcampeon', document.getElementById('cs-sub').textContent);
-  formData.append('tercero',    document.getElementById('cs-3rd').textContent);
-  formData.append('cuarto',     document.getElementById('cs-4th').textContent);
+  formData.append('tercero', document.getElementById('cs-3rd').textContent);
+  formData.append('cuarto', document.getElementById('cs-4th').textContent);
 
   const is3000 = pollaType === '3000';
-  const s = is3000 ? '3' : ''; 
+  const s = is3000 ? '3' : '';
 
-  formData.append('goleador',        document.getElementById(`goleador${s}`)?.value        || '');
-  formData.append('mejor_arquero',   document.getElementById(`portero${s}`)?.value         || '');
-  formData.append('goles_final',     document.getElementById(`golesFinal${s}`)?.value      || '');
-  formData.append('tarjetas_rojas',  document.getElementById(`tarjetasRojas${s}`)?.value   || '');
-  formData.append('goles_grupos',    document.getElementById(`golesFaseGrupos${s}`)?.value || '');
-  formData.append('equipo_sorpresa',   document.getElementById(`equipoSorpresa${s}`)?.dataset.value  || '');
-  formData.append('equipo_decepcion',  document.getElementById(`equipoDecepcion${s}`)?.dataset.value || '');
-  formData.append('jugador_joven',    document.getElementById(`jugadorJoven${s}`)?.value    || '');
-  formData.append('seleccion_goles',   document.getElementById(`seleccionGoles${s}`)?.dataset.value  || '');
-  formData.append('seleccion_defensa', document.getElementById(`seleccionDefensa${s}`)?.dataset.value|| '');
-  formData.append('prorroga_final',   document.getElementById(`prorrogaFinal${s}`)?.value   || '');
+  formData.append('goleador', document.getElementById(`goleador${s}`)?.value || '');
+  formData.append('mejor_arquero', document.getElementById(`portero${s}`)?.value || '');
+  formData.append('goles_final', document.getElementById(`golesFinal${s}`)?.value || '');
+  formData.append('tarjetas_rojas', document.getElementById(`tarjetasRojas${s}`)?.value || '');
+  formData.append('goles_grupos', document.getElementById(`golesFaseGrupos${s}`)?.value || '');
+  formData.append('equipo_sorpresa', document.getElementById(`equipoSorpresa${s}`)?.dataset.value || '');
+  formData.append('equipo_decepcion', document.getElementById(`equipoDecepcion${s}`)?.dataset.value || '');
+  formData.append('jugador_joven', document.getElementById(`jugadorJoven${s}`)?.value || '');
+  formData.append('seleccion_goles', document.getElementById(`seleccionGoles${s}`)?.dataset.value || '');
+  formData.append('seleccion_defensa', document.getElementById(`seleccionDefensa${s}`)?.dataset.value || '');
+  formData.append('prorroga_final', document.getElementById(`prorrogaFinal${s}`)?.value || '');
 
-  if(pollaType === '3000'){
+  if (pollaType === '3000') {
     formData.append('comprobante', uploadedFile);
     GROUP_IDS.forEach(g => {
       const card = document.querySelector(`#groups-grid .group-card[data-group="${g}"]`);
-      if(!card) return;
+      if (!card) return;
       card.querySelectorAll('.rank-row').forEach((r, i) => {
-        const p    = r.querySelector('.team-pill');
+        const p = r.querySelector('.team-pill');
         const name = p ? (p.dataset.teamName || p.querySelector('.team-name-txt')?.textContent || '') : '';
         formData.append(`grupo_${g}_${i + 1}`, name);
       });
@@ -804,18 +955,18 @@ function submitForm() {
     [
       { key: 'R32', cfgs: BRACKET.R32 },
       { key: 'R16', cfgs: BRACKET.R16 },
-      { key: 'QF',  cfgs: BRACKET.QF  },
-      { key: 'SF',  cfgs: BRACKET.SF  },
-      { key: 'F',   cfgs: BRACKET.F   }
+      { key: 'QF', cfgs: BRACKET.QF },
+      { key: 'SF', cfgs: BRACKET.SF },
+      { key: 'F', cfgs: BRACKET.F }
     ].forEach(({ key, cfgs }) => {
       cfgs.forEach(cfg => {
-        const d  = koDom[cfg.id];
-        if(!d) return;
+        const d = koDom[cfg.id];
+        if (!d) return;
         const e1 = d.t1span.dataset.teamName || '';
         const e2 = d.t2span.dataset.teamName || '';
-        const gn = knockoutWinners[cfg.id]   || '';
-        if(e1 && e2 && !e1.startsWith('W ') && !e2.startsWith('W ')){
-          formData.append(`ronda_${n}`,   key);
+        const gn = knockoutWinners[cfg.id] || '';
+        if (e1 && e2 && !e1.startsWith('W ') && !e2.startsWith('W ')) {
+          formData.append(`ronda_${n}`, key);
           formData.append(`partido_${n}`, cfg.id);
           formData.append(`equipo1_${n}`, e1);
           formData.append(`equipo2_${n}`, e2);
@@ -825,12 +976,12 @@ function submitForm() {
       });
     });
     const tp = koDom['TP-1'];
-    if(tp){
+    if (tp) {
       const e1 = tp.t1span.dataset.teamName || '';
       const e2 = tp.t2span.dataset.teamName || '';
-      const gn = knockoutWinners['TP-1']    || '';
-      if(e1 && e2 && !e1.startsWith('W ') && !e2.startsWith('W ')){
-        formData.append(`ronda_${n}`,   'TP');
+      const gn = knockoutWinners['TP-1'] || '';
+      if (e1 && e2 && !e1.startsWith('W ') && !e2.startsWith('W ')) {
+        formData.append(`ronda_${n}`, 'TP');
         formData.append(`partido_${n}`, 'TP-1');
         formData.append(`equipo1_${n}`, e1);
         formData.append(`equipo2_${n}`, e2);
@@ -842,23 +993,23 @@ function submitForm() {
     method: 'POST',
     body: formData
   })
-  .then(res => res.json())
-  .then(data => {
-    if(data.error){
-      alert(data.error);
-      return;
-    }
-    document.querySelector('.form-actions').style.display = 'none';
-    document.getElementById('panel3').classList.remove('active');
-    const ss = document.getElementById('successScreen');
-    ss.classList.add('show');
-    document.getElementById('pollNumber').textContent = '#' + data.id;
-    launchConfetti();
-  })
-  .catch(err => {
-    console.error(err);
-    alert("Error al guardar");
-  });
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+      document.querySelector('.form-actions').style.display = 'none';
+      document.getElementById('panel3').classList.remove('active');
+      const ss = document.getElementById('successScreen');
+      ss.classList.add('show');
+      document.getElementById('pollNumber').textContent = '#' + data.id;
+      launchConfetti();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error al guardar");
+    });
 }
 
 
@@ -900,10 +1051,10 @@ function buildTeamSelect(containerId) {
     </div>
   `;
 
-  const trigger  = container.querySelector('.ts-trigger');
+  const trigger = container.querySelector('.ts-trigger');
   const dropdown = container.querySelector('.ts-dropdown');
-  const search   = container.querySelector('.ts-search');
-  const list     = container.querySelector('.ts-list');
+  const search = container.querySelector('.ts-search');
+  const list = container.querySelector('.ts-list');
 
   function renderList(filter = '') {
     const q = filter.toLowerCase();
@@ -923,8 +1074,8 @@ function buildTeamSelect(containerId) {
           trigger.innerHTML = `
             <span style="display:flex;align-items:center;gap:.5rem;">
               ${t.flag
-                ? `<img src="${t.flag}" style="width:20px;height:15px;border-radius:2px;object-fit:cover;">`
-                : ''}
+              ? `<img src="${t.flag}" style="width:20px;height:15px;border-radius:2px;object-fit:cover;">`
+              : ''}
               <span>${t.name}</span>
             </span>
             <span class="ts-arrow">▼</span>`;
@@ -953,5 +1104,5 @@ function buildTeamSelect(containerId) {
   renderList();
 }
 
-['equipoSorpresa3','equipoDecepcion3','seleccionGoles3','seleccionDefensa3'].forEach(buildTeamSelect);
-['equipoSorpresa','equipoDecepcion','seleccionGoles','seleccionDefensa'].forEach(buildTeamSelect);
+['equipoSorpresa3', 'equipoDecepcion3', 'seleccionGoles3', 'seleccionDefensa3'].forEach(buildTeamSelect);
+['equipoSorpresa', 'equipoDecepcion', 'seleccionGoles', 'seleccionDefensa'].forEach(buildTeamSelect);

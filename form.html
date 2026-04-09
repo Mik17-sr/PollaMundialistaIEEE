@@ -50,65 +50,99 @@
         </div>
         <div style="padding:1.75rem;">
           <div class="fields-grid two-col">
-            <div class="field-group" id="fg-codigo">
-              <label for="codigo">Código Estudiantil <span>*</span></label>
-              <input type="number" id="codigo" placeholder="Ej. 20231234" />
-              <small id="codigo-status"></small>
-              <span class="field-error">Ingresa tu código estudiantil</span>
-            </div>
-            <div class="field-group" id="fg-nombre">
-              <label for="nombre">Nombre Completo <span>*</span></label>
-              <input type="text" id="nombre" placeholder="Ej. Laura Martínez Pérez" autocomplete="name" />
-              <span class="field-error">Por favor ingresa tu nombre completo</span>
-            </div>
-            <div class="field-group" id="fg-correo">
-              <label for="correo">Correo <span>*</span></label>
-              <input type="email" id="correo" placeholder="usuario@udistrital.edu.co" />
-              <span class="field-error">Ingresa un correo válido</span>
-            </div>
-            <div class="field-group" id="fg-telefono">
-              <label for="telefono">Teléfono / WhatsApp <span>*</span></label>
-              <input type="tel" id="telefono" placeholder="Ej. 3001234567" maxlength="12" />
-              <span class="field-error">Ingresa tu número de teléfono</span>
-            </div>
-            <div class="field-group" id="fg-proyecto" style="grid-column:1/-1;">
-              <label for="proyecto">Proyecto Curricular <span>*</span></label>
-              <select id="proyecto">
-                <option value="" disabled selected>Selecciona tu carrera</option>
-                <option>Tecnología en Sistematización de Datos</option>
-                <option>Tecnología en Construcciones Civiles</option>
-                <option>Tecnología en Electricidad de Media y Baja Tensión</option>
-                <option>Tecnología en Electrónica Industrial</option>
-                <option>Tecnología en Gestión de la Producción Industrial</option>
-                <option>Tecnología en Mecánica Industrial</option>
-                <option>Ingeniería Civil</option>
-                <option>Ingeniería de Producción</option>
-                <option>Ingeniería Eléctrica</option>
-                <option>Ingeniería en Control y Automatización</option>
-                <option>Ingeniería en Telecomunicaciones</option>
-                <option>Ingeniería en Telemática</option>
-                <option>Ingeniería Mecánica</option>
-                <option>Otro</option>
-              </select>
-              <span class="field-error">Selecciona tu proyecto curricular</span>
-            </div>
-            <div class="field-group" id="fg-tipo" style="grid-column:1/-1;">
-              <label>Tipo de Polla <span>*</span></label>
-              <div class="type-row" id="typeRow">
-                <label class="type-card" id="tc-free">
-                  <input type="radio" class="type-radio" name="tipoPolla" value="free" id="tp-free" />
-                  <div class="type-card-top"><span class="type-card-name"><i class="bi bi-ticket-perforated"></i> Polla
-                      Gratis</span><span class="type-card-price">$0</span></div>
-                  <div class="type-card-desc">Predice el podio del torneo (4 equipos)</div>
+            <div class="field-group" id="fg-esud" style="grid-column:1/-1;">
+              <label>¿Eres estudiante de la UD? <span>*</span></label>
+              <div class="type-row" id="udRow">
+                <label class="type-card" id="tc-ud-si">
+                  <input type="radio" name="esUD" value="si" id="ud-si" />
+                  <div class="type-card-top"><span class="type-card-name">Sí, soy estudiante UD</span></div>
+                  <div class="type-card-desc">Accede con tu código estudiantil</div>
                 </label>
-                <label class="type-card" id="tc-3000">
-                  <input type="radio" class="type-radio" name="tipoPolla" value="3000" id="tp-3000" />
-                  <div class="type-card-top"><span class="type-card-name"><i class="bi bi-trophy"></i> Polla
-                      $3.000</span><span class="type-card-price">$3.000</span></div>
-                  <div class="type-card-desc">Simula grupos, terceros y bracket completo</div>
+                <label class="type-card" id="tc-ud-no">
+                  <input type="radio" name="esUD" value="no" id="ud-no" />
+                  <div class="type-card-top"><span class="type-card-name">No, soy externo</span></div>
+                  <div class="type-card-desc">Inscríbete con cédula y correo personal</div>
                 </label>
               </div>
-              <span class="field-error" id="tipo-err" style="display:none;">Selecciona un tipo de polla</span>
+              <span class="field-error" id="esud-err" style="display:none;">Indica si eres estudiante UD</span>
+            </div>
+            <div class="fields-reveal" id="fieldsReveal" style="grid-column:1/-1;">
+              <div class="fields-grid two-col">
+
+                <div class="field-group" id="fg-codigo" style="display:none;">
+                  <label for="codigo">Código Estudiantil <span>*</span></label>
+                  <input type="number" id="codigo" placeholder="Ej. 20231234" />
+                  <small id="codigo-status"></small>
+                  <span class="field-error">Ingresa tu código estudiantil</span>
+                </div>
+
+                <div class="field-group" id="fg-documento" style="display:none;">
+                  <label for="documento">Cédula / Documento <span>*</span></label>
+                  <input type="text" id="documento" placeholder="Ej. 1020304050" maxlength="15" />
+                  <small id="documento-status"></small>
+                  <span class="field-error">Ingresa tu número de documento</span>
+                </div>
+
+                <div class="field-group" id="fg-nombre">
+                  <label for="nombre">Nombre Completo <span>*</span></label>
+                  <input type="text" id="nombre" placeholder="Ej. Laura Martínez Pérez" autocomplete="name" />
+                  <span class="field-error">Por favor ingresa tu nombre completo</span>
+                </div>
+
+                <div class="field-group" id="fg-correo">
+                  <label for="correo">Correo <span>*</span></label>
+                  <input type="email" id="correo"/>
+                  <span class="field-error" id="correo-error">Ingresa un correo válido</span>
+                </div>
+
+                <div class="field-group" id="fg-telefono">
+                  <label for="telefono">Teléfono / WhatsApp <span>*</span></label>
+                  <input type="tel" id="telefono" placeholder="Ej. 3001234567" maxlength="12" />
+                  <span class="field-error">Ingresa tu número de teléfono</span>
+                </div>
+
+                <div class="field-group" id="fg-proyecto" style="grid-column:1/-1;">
+                  <label for="proyecto">Proyecto Curricular <span>*</span></label>
+                  <select id="proyecto">
+                    <option value="" disabled selected>Selecciona tu carrera</option>
+                    <option>Tecnología en Sistematización de Datos</option>
+                    <option>Tecnología en Construcciones Civiles</option>
+                    <option>Tecnología en Electricidad de Media y Baja Tensión</option>
+                    <option>Tecnología en Electrónica Industrial</option>
+                    <option>Tecnología en Gestión de la Producción Industrial</option>
+                    <option>Tecnología en Mecánica Industrial</option>
+                    <option>Ingeniería Civil</option>
+                    <option>Ingeniería de Producción</option>
+                    <option>Ingeniería Eléctrica</option>
+                    <option>Ingeniería en Control y Automatización</option>
+                    <option>Ingeniería en Telecomunicaciones</option>
+                    <option>Ingeniería en Telemática</option>
+                    <option>Ingeniería Mecánica</option>
+                    <option>Otro</option>
+                  </select>
+                  <span class="field-error">Selecciona tu proyecto curricular</span>
+                </div>
+
+                <div class="field-group" id="fg-tipo" style="grid-column:1/-1;">
+                  <label>Tipo de Polla <span>*</span></label>
+                  <div class="type-row" id="typeRow">
+                    <label class="type-card" id="tc-free">
+                      <input type="radio" class="type-radio" name="tipoPolla" value="free" id="tp-free" />
+                      <div class="type-card-top"><span class="type-card-name"><i class="bi bi-ticket-perforated"></i>
+                          Polla Gratis</span><span class="type-card-price">$0</span></div>
+                      <div class="type-card-desc">Predice el podio del torneo (4 equipos)</div>
+                    </label>
+                    <label class="type-card" id="tc-3000">
+                      <input type="radio" class="type-radio" name="tipoPolla" value="3000" id="tp-3000" />
+                      <div class="type-card-top"><span class="type-card-name"><i class="bi bi-trophy"></i> Polla
+                          $3.000</span><span class="type-card-price">$3.000</span></div>
+                      <div class="type-card-desc">Simula grupos, terceros y bracket completo</div>
+                    </label>
+                  </div>
+                  <span class="field-error" id="tipo-err" style="display:none;">Selecciona un tipo de polla</span>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>

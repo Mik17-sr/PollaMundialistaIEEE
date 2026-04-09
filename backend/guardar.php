@@ -28,14 +28,15 @@ if($row){
     $correo   = trim($_POST['correo']   ?? '');
     $telefono = trim($_POST['telefono'] ?? '');
     $proyecto = trim($_POST['proyecto'] ?? '');
+    $es_ud = isset($_POST['es_ud']) ? (int)$_POST['es_ud'] : 1;
 
     if(!$nombre || !$correo){
         echo json_encode(["error" => "Faltan datos del usuario"]);
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO usuario(nombre,codigo,correo,telefono,proyecto) VALUES(?,?,?,?,?)");
-    $stmt->bind_param("sssss", $nombre, $codigo, $correo, $telefono, $proyecto);
+    $stmt = $conn->prepare("INSERT INTO usuario(nombre,codigo,correo,telefono,proyecto,es_ud) VALUES(?,?,?,?,?,?)");
+    $stmt->bind_param("sssssi", $nombre, $codigo, $correo, $telefono, $proyecto, $es_ud);
     $stmt->execute();
     $id_usuario = $stmt->insert_id;
 }
