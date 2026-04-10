@@ -419,3 +419,10 @@ select option{background:var(--bg-el);color:var(--text);}
 	align-items: center;
 	gap: 0.5rem;
 }
+
+#prevName {
+  transition: opacity 0.2s;
+}
+#uploadPreview.show #prevName {
+  opacity: 1;
+}

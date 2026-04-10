@@ -380,9 +380,12 @@ function buildPool() {
     if (podiumData[1] === t.name || podiumData[2] === t.name || podiumData[3] === t.name || podiumData[4] === t.name) return;
     pool.appendChild(makeTeamCard(t));
   });
+
 }
+let touchClone    = null;
 
 function makeTeamCard(t) {
+  
   const div = document.createElement('div');
   div.className = 'team-card'; div.draggable = true;
   div.dataset.team = t.name; div.dataset.code = t.code;
@@ -396,18 +399,41 @@ function makeTeamCard(t) {
   div.addEventListener('dragend', () => div.classList.remove('dragging-out'));
 
   div.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const touch = e.touches[0];
     touchDragData = { team: t.name, code: t.code, el: div };
+    touchClone = div.cloneNode(true);
+    touchClone.style.cssText = `
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.85;
+      width: ${div.offsetWidth}px;
+      left: ${touch.clientX - div.offsetWidth / 2}px;
+      top:  ${touch.clientY - div.offsetHeight / 2}px;
+      margin: 0;
+    `;
+    document.body.appendChild(touchClone);
     div.classList.add('dragging-out');
-  }, { passive: true });
+  }, { passive: false });
 
-  div.addEventListener('touchend', e => {
-    div.classList.remove('dragging-out');
-    const touch = e.changedTouches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    const zone = target?.closest('.drop-zone');
-    if (zone) dropOnZone(zone, touchDragData.team, touchDragData.code);
-    touchDragData = null;
-  });
+ document.addEventListener('touchend', e => {
+  if (!touchDragData) return;
+  const touch = e.changedTouches[0];
+  if (touchClone) touchClone.style.display = 'none';
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (touchClone) { touchClone.style.display = ''; touchClone.remove(); touchClone = null; }
+
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('over'));
+
+  const zone = el?.closest('.drop-zone');
+  if (zone) {
+    dropOnZone(zone, touchDragData.team, touchDragData.code);
+  }
+
+  touchDragData.el?.classList.remove('dragging-out');
+  touchDragData = null;
+});
 
   return div;
 }
@@ -431,16 +457,22 @@ document.querySelectorAll('.drop-zone').forEach(zone => {
     dropOnZone(zone, e.dataTransfer.getData('team'), e.dataTransfer.getData('code'));
   });
 
-  zone.addEventListener('touchmove', e => {
+  document.addEventListener('touchmove', e => {
+    if (!touchClone || !touchDragData) return;
     e.preventDefault();
     const touch = e.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchClone.style.left = `${touch.clientX - touchClone.offsetWidth  / 2}px`;
+    touchClone.style.top  = `${touch.clientY - touchClone.offsetHeight / 2}px`;
+    touchClone.style.display = 'none';
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchClone.style.display = '';
+
     document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('over'));
-    target?.closest('.drop-zone')?.classList.add('over');
+    el?.closest('.drop-zone')?.classList.add('over');
   }, { passive: false });
 
-  zone.addEventListener('touchend', () => zone.classList.remove('over'));
-});
+    zone.addEventListener('touchend', () => zone.classList.remove('over'));
+  });
 
 function filterPool() {
   const q = document.getElementById('teamSearch').value.toLowerCase();
@@ -890,20 +922,38 @@ function buildConfirm() {
 }
 
 function handleFile(input) {
-  const file = input.files[0]; if (!file) return;
+  const file = input?.files?.[0] || input;
+  if (!file) return;
   if (file.size > 5 * 1024 * 1024) { alert('El archivo supera 5MB.'); return; }
-  uploadedFile = file;
-  document.getElementById('prevName').textContent = file.name;
-  document.getElementById('prevSize').textContent = (file.size / 1024).toFixed(0) + ' KB';
+
+  document.getElementById('prevName').textContent = 'Cargando...';
+  document.getElementById('prevSize').textContent = '...';
   document.getElementById('uploadPreview').classList.add('show');
   document.getElementById('uploadArea').style.display = 'none';
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedFile = file;
+    document.getElementById('prevName').textContent = file.name;
+    document.getElementById('prevSize').textContent = (file.size / 1024).toFixed(0) + ' KB';
+  };
+  reader.onerror = () => {
+    alert('Error al leer el archivo. Intenta de nuevo.');
+    removeFile();
+  };
+  reader.readAsDataURL(file);
 }
+
 function removeFile() { uploadedFile = null; document.getElementById('uploadPreview').classList.remove('show'); document.getElementById('uploadArea').style.display = 'block'; document.getElementById('fileInput').value = ''; }
 function handleDrop(e) { e.preventDefault(); document.getElementById('uploadArea').classList.remove('over'); const file = e.dataTransfer.files[0]; if (file) { const fi = document.getElementById('fileInput'); const dt = new DataTransfer(); dt.items.add(file); fi.files = dt.files; handleFile(fi); } }
 document.getElementById('uploadArea')?.addEventListener('dragover', e => { e.preventDefault(); e.currentTarget.classList.add('over'); });
 document.getElementById('uploadArea')?.addEventListener('dragleave', e => e.currentTarget.classList.remove('over'));
 
 function submitForm() {
+  if (!uploadedFile) {
+    const fi = document.getElementById('fileInput');
+    if (fi?.files?.[0]) uploadedFile = fi.files[0];
+  }
   if (pollaType === '3000' && !uploadedFile) {
     alert('Por favor adjunta tu comprobante de pago.');
     return;
@@ -940,7 +990,15 @@ function submitForm() {
   formData.append('prorroga_final', document.getElementById(`prorrogaFinal${s}`)?.value || '');
 
   if (pollaType === '3000') {
-    formData.append('comprobante', uploadedFile);
+    const originalName = uploadedFile.name;
+    const lastDot = originalName.lastIndexOf('.');
+    const ext  = lastDot !== -1 ? originalName.slice(lastDot) : '';
+    const base = lastDot !== -1 ? originalName.slice(0, lastDot) : originalName;
+    const cleanBase = base.replace(/\./g, '-');
+    const cleanName = cleanBase + ext;
+
+    const safeFile = new File([uploadedFile], cleanName, { type: uploadedFile.type });
+    formData.append('comprobante', safeFile);
     GROUP_IDS.forEach(g => {
       const card = document.querySelector(`#groups-grid .group-card[data-group="${g}"]`);
       if (!card) return;
@@ -1034,6 +1092,22 @@ const WORLD_CUP_TEAMS = Object.values(BASE_TEAMS)
     flag: FLAGS[name] ? `https://flagcdn.com/20x15/${FLAGS[name]}.png` : null
   }));
 
+
+const fileInputEl = document.getElementById('fileInput');
+if (fileInputEl) {
+  fileInputEl.addEventListener('change', (e) => {
+    setTimeout(() => {
+      const file = e.target.files?.[0];
+      if (file) handleFile(file);
+    }, 300);
+  });
+  fileInputEl.addEventListener('input', (e) => {
+    setTimeout(() => {
+      const file = e.target.files?.[0];
+      if (file) handleFile(file);
+    }, 300);
+  });
+}
 function buildTeamSelect(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;

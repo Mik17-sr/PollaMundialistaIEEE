@@ -399,3 +399,35 @@ nav{position:sticky;top:0;z-index:200;background:rgba(10,10,15,0.92);backdrop-fi
 	align-items: center;
 	gap: 0.5rem;
 }
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; 
+  overscroll-behavior-x: contain;
+  max-width: 100%;
+}
+
+.lb-table {
+  min-width: 800px; 
+}
+
+.table-scroll {
+  overflow-x: scroll;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+.lb-table th:first-child,
+.lb-table td:first-child { 
+  left: 0;
+  background: #111; 
+  z-index: 2;
+}

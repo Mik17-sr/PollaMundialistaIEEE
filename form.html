@@ -387,7 +387,7 @@
           </div>
           <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()"
             ondragover="e=>e.preventDefault()" ondrop="handleDrop(event)">
-            <input type="file" id="fileInput" accept="image/*,.pdf" onchange="handleFile(this)" />
+            <input type="file" id="fileInput" accept="image/*,.pdf" capture="environment">
             <div class="upload-icon"><i class="bi bi-paperclip"></i></div>
             <div class="upload-title">Arrastra tu comprobante de pago aquí</div>
             <div class="upload-sub">o haz clic para seleccionar · JPG · PNG · PDF · Max 5MB</div>

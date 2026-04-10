@@ -255,7 +255,7 @@ function renderTable() {
   });
 
   html += '</tbody></table>';
-  card.innerHTML = html;
+  card.innerHTML = `<div class="table-scroll">${html}</div>`;
 }
 
 function matchCardHTML(pe, matchNum, ronda, elimDet = []) {
