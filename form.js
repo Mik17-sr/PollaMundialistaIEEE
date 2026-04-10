@@ -950,12 +950,19 @@ document.getElementById('uploadArea')?.addEventListener('dragover', e => { e.pre
 document.getElementById('uploadArea')?.addEventListener('dragleave', e => e.currentTarget.classList.remove('over'));
 
 function submitForm() {
+  const btnNext = document.getElementById('btnNext');
+  if (btnNext.disabled) return; 
+  btnNext.disabled = true;
+  btnNext.textContent = 'Enviando...';
+
   if (!uploadedFile) {
     const fi = document.getElementById('fileInput');
     if (fi?.files?.[0]) uploadedFile = fi.files[0];
   }
   if (pollaType === '3000' && !uploadedFile) {
     alert('Por favor adjunta tu comprobante de pago.');
+    btnNext.disabled = false;
+    btnNext.textContent = 'Enviar ✓';
     return;
   }
   const formData = new FormData();
@@ -1055,6 +1062,8 @@ function submitForm() {
     .then(data => {
       if (data.error) {
         alert(data.error);
+        btnNext.disabled = false;
+        btnNext.textContent = 'Enviar ✓';
         return;
       }
       document.querySelector('.form-actions').style.display = 'none';
@@ -1067,6 +1076,8 @@ function submitForm() {
     .catch(err => {
       console.error(err);
       alert("Error al guardar");
+      btnNext.disabled = false;
+      btnNext.textContent = 'Enviar ✓';
     });
 }
 
